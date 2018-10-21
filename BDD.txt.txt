@@ -1,0 +1,54 @@
+-- Création de la table user
+CREATE  TABLE `achille_db`.`user` (
+  `user_id` INT NOT NULL ,
+  `login` VARCHAR(45) NULL ,
+  `password` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) );
+-- Insertion de données de test
+INSERT INTO `achille_db`.`user` (`id`,`login`,`password`) VALUES (1,"TEST","TEST");
+
+INSERT INTO `achille_db`.`user` (`id`,`login`,`password`) VALUES (1,"USER1","USER1");
+
+INSERT INTO `achille_db`.`user` (`id`,`login`,`password`) VALUES (1,"ADMIN","ADMIN");
+
+--Création de la table authority
+CREATE  TABLE `achille_db`.`authority` (
+  `authority` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`authority`) );
+
+-- Insertion de données de test
+INSERT INTO `achille_db`.`authority` (`authority`) VALUES ("SUPER");
+
+INSERT INTO `achille_db`.`authority` (`authority`) VALUES ("READ");
+
+INSERT INTO `achille_db`.`authority` (`authority`) VALUES ("CREATE");
+
+INSERT INTO `achille_db`.`authority` (`authority`) VALUES ("DELETE");
+
+-- Table de jointure
+-- Table de jointure
+CREATE  TABLE `achille_db`.`user_authority` (
+  `user_user_id` INT NOT NULL ,
+  `authority_authority_id` VARCHAR(45) NULL ,
+  INDEX `fk_authority_idx` (`authority_authority_id` ASC) ,
+  CONSTRAINT `fk_user`
+    FOREIGN KEY (`user_user_id` )
+    REFERENCES `achille_db`.`user` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_authority`
+    FOREIGN KEY (`authority_authority_id` )
+    REFERENCES `achille_db`.`authority` (`authority` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+-- Insertion de données de test
+INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority_id`) VALUES ('1', 'SUPER');
+
+INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority_id`) VALUES ('2', 'READ');
+
+INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority_id`) VALUES ('3', 'CREATE');
+
+INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority_id`) VALUES ('3', 'READ');
+
+INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority_id`) VALUES ('3', 'DELETE');
