@@ -17,12 +17,14 @@ public class Consultant {
 	@Id
 	@GeneratedValue
 	private int id;
+	private String societe;
 	private String nom;
 	private String prenom;
 	private String nomJeuneFille;
 	private Sexe sexe;
 	@ManyToOne(targetEntity=Adresse.class, fetch=FetchType.EAGER)
 	private Adresse Adresse;
+	private String email;
 	private String portableNumeros;
 	private String fixeNumeros;
 	private double securiteSocial;
@@ -58,6 +60,12 @@ public class Consultant {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public String getSociete() {
+		return societe;
+	}
+	public void setSociete(String societe) {
+		this.societe = societe;
 	}
 	public String getNom() {
 		return nom;
@@ -214,6 +222,12 @@ public class Consultant {
 	}
 	public void setConventionAdhesion(Doc conventionAdhesion) {
 		this.conventionAdhesion = conventionAdhesion;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }
