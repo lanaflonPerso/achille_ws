@@ -52,7 +52,7 @@ public class Consultant {
 	private Doc conventionAdhesion;
 	
 	public enum Sexe { m, f; }
-	public enum StatutFamilal { maried, pacs, single; }
+	public enum StatutFamilal { marie, pacs, celibataire; }
 	public enum Nationalite { FR, EEE, HORS_EEE; }
 	
 	public int getId() {

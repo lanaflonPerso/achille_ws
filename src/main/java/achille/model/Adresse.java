@@ -13,7 +13,6 @@ public class Adresse {
 	@GeneratedValue
 	private int id;
 	private String rue;
-	private int numeros;
 	private int codePostal;
 	private String ville;
 	
@@ -22,12 +21,6 @@ public class Adresse {
 	}
 	public void setRue(String rue) {
 		this.rue = rue;
-	}
-	public int getNumeros() {
-		return numeros;
-	}
-	public void setNumeros(int numeros) {
-		this.numeros = numeros;
 	}
 	public int getCodePostal() {
 		return codePostal;

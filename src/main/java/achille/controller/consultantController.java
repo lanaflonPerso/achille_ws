@@ -13,6 +13,7 @@ import achille.dao.AdresseDAO;
 import achille.dao.ConsultantDAO;
 import achille.model.Adresse;
 import achille.model.Consultant;
+import ch.qos.logback.core.net.SyslogOutputStream;
 
 
 @CrossOrigin(origins = "*")
@@ -32,7 +33,8 @@ public class consultantController {
 	
 	//Insère un consultant
 	@RequestMapping(value ="/consultant",  method=RequestMethod.POST)
-	Consultant create( @RequestBody Consultant c) {
+	Consultant create( @RequestBody Consultant c) { 
+		System.out.println("tot");
 		c.setAdresse(adresseDAO.save(c.getAdresse()));
 		return consultantDAO.save(c);
 	}
