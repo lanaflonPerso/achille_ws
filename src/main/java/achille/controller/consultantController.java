@@ -1,5 +1,6 @@
 package achille.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,22 @@ public class consultantController {
 		return consultantDAO.save(c);
 	}
 	
-	
+	//Renvoie un modèle de consultant
+	@RequestMapping(value ="/consultant/exemple",  method=RequestMethod.GET)
+	Consultant exemple() {
+		Consultant c= new Consultant();
+		Adresse a = new Adresse();
+		a.setNumeros(6);
+		a.setRue("Villa Leblanc");
+		a.setCodePostal(92120);
+		a.setVille("Montrouge");
+		c.setNom("BURBAN");
+		c.setAdresse(a);
+		c.setPrenom("Eugène");
+		c.setDateNaissance(new Date(2017,07,24));
+		return c;
+	}
+
 	
 
 }

@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.6.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -25,36 +25,39 @@
 	</properties>
 
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-<!-- Security -->
-		<!--  <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		-->
+		<!-- Security -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		 <!-- Dépendance pour initialiser JPA -->
+
+		<!-- Dépendance pour initialiser JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
-		 <!-- Dépendance pour charger le driver de base de donnéesy -->
+
+		<!-- Dépendance pour charger le driver de base de donnéesy -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.6</version>
 		</dependency>
-		
+
+		<!-- Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
