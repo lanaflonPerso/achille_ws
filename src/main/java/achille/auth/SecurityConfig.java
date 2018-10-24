@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.disable()
 		.authenticationProvider(provider)
 		.authorizeRequests()
+		//.antMatchers("/consultants").permitAll()
 		.antMatchers("/consultants").hasAuthority("ADMIN")
 		.antMatchers(HttpMethod.POST,"/consultant/*").hasAnyAuthority("CONSULTANT","ADMIN")
 		.antMatchers(HttpMethod.POST,"/consultant").hasAuthority("CONSULTANT")
