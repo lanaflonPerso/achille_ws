@@ -7,7 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,43 +17,32 @@ public class Consultant {
 	@Id
 	@GeneratedValue
 	private int id;
-	private String societe;
+	@ManyToOne(targetEntity=Societe.class, fetch=FetchType.EAGER)
+	private Societe societe;
 	private String nom;
 	private String prenom;
-	private String nomJeuneFille;
-	private Sexe sexe;
-	@ManyToOne(targetEntity=Adresse.class, fetch=FetchType.EAGER)
-	private Adresse Adresse;
+	private String matricule;
 	private String email;
-	private String portableNumeros;
-	private String fixeNumeros;
-	private double securiteSocial;
-	private Date dateNaissance;
-	private String lieuNaissance;
-	private Nationalite nationalite;
-	private String pays;
-	private double titreSejourNumeros;
-	private double visaNumeros;
-	private Date dateValidite;
-	private StatutFamilal situationFamilial;
-	private int nombrePersonnesCharges;
-	private Boolean mutuelle;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc attestationMutuelle;
-	private Date dateVisiteMedicale;
-	private Boolean allocatairePoleEmploi;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc rib;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc carteGrise;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc prevoyance;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc conventionAdhesion;
-	
-	public enum Sexe { m, f; }
-	public enum StatutFamilal { marie, pacs, celibataire; }
-	public enum Nationalite { FR, EEE, HORS_EEE; }
+	private Date dateEntree;
+	private Date dateFinContratCom;
+    private Date dateSortiePaie;
+    @ManyToOne(targetEntity=Partenaire.class, fetch=FetchType.EAGER)
+    private Partenaire partenaire;
+    private String contact;
+    private double TJM;
+    private double forfaitFrais;
+    private Boolean DUE;
+    @ManyToOne(targetEntity=TypeContrat.class, fetch=FetchType.EAGER)
+    private TypeContrat typeContrat;
+    private Boolean entreePaie;
+    private Boolean stcPaie;
+    private String observation;
+    private double plvtIntervia;
+    private String lieuActiviteInsee;
+    private Boolean davidsonCommission;
+    private Boolean campagnePaie;
+    @OneToOne
+    private Fiche fiche;
 	
 	public int getId() {
 		return id;
@@ -61,10 +50,10 @@ public class Consultant {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getSociete() {
+	public Societe getSociete() {
 		return societe;
 	}
-	public void setSociete(String societe) {
+	public void setSociete(Societe societe) {
 		this.societe = societe;
 	}
 	public String getNom() {
@@ -79,149 +68,11 @@ public class Consultant {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-	public String getNomJeuneFille() {
-		return nomJeuneFille;
+	public String getMatricule() {
+		return matricule;
 	}
-	public void setNomJeuneFille(String nomJeuneFille) {
-		this.nomJeuneFille = nomJeuneFille;
-	}
-	public Sexe getSexe() {
-		return sexe;
-	}
-	public void setSexe(Sexe sexe) {
-		this.sexe = sexe;
-	}
-	
-	public Adresse getAdresse() {
-		return Adresse;
-	}
-	public void setAdresse(Adresse adresse) {
-		Adresse = adresse;
-	}
-	public String getPortableNumeros() {
-		return portableNumeros;
-	}
-	public void setPortableNumeros(String portableNumeros) {
-		this.portableNumeros = portableNumeros;
-	}
-	public String getFixeNumeros() {
-		return fixeNumeros;
-	}
-	public void setFixeNumeros(String fixeNumeros) {
-		this.fixeNumeros = fixeNumeros;
-	}
-	public double getSecuriteSocial() {
-		return securiteSocial;
-	}
-	public void setSecuriteSocial(double securiteSocial) {
-		this.securiteSocial = securiteSocial;
-	}
-	public Date getDateNaissance() {
-		return dateNaissance;
-	}
-	public void setDateNaissance(Date dateNaissance) {
-		this.dateNaissance = dateNaissance;
-	}
-	public String getLieuNaissance() {
-		return lieuNaissance;
-	}
-	public void setLieuNaissance(String lieuNaissance) {
-		this.lieuNaissance = lieuNaissance;
-	}
-	public Nationalite getNationalite() {
-		return nationalite;
-	}
-	public void setNationalite(Nationalite nationalite) {
-		this.nationalite = nationalite;
-	}
-	public String getPays() {
-		return pays;
-	}
-	public void setPays(String pays) {
-		this.pays = pays;
-	}
-	public double getTitreSejourNumeros() {
-		return titreSejourNumeros;
-	}
-	public void setTitreSejourNumeros(double titreSejourNumeros) {
-		this.titreSejourNumeros = titreSejourNumeros;
-	}
-	public double getVisaNumeros() {
-		return visaNumeros;
-	}
-	public void setVisaNumeros(double visaNumeros) {
-		this.visaNumeros = visaNumeros;
-	}
-	public Date getDateValidite() {
-		return dateValidite;
-	}
-	public void setDateValidite(Date dateValidite) {
-		this.dateValidite = dateValidite;
-	}
-	public StatutFamilal getSituationFamilial() {
-		return situationFamilial;
-	}
-	public void setSituationFamilial(StatutFamilal situationFamilial) {
-		this.situationFamilial = situationFamilial;
-	}
-	public int getNombrePersonnesCharges() {
-		return nombrePersonnesCharges;
-	}
-	public void setNombrePersonnesCharges(int nombrePersonnesCharges) {
-		this.nombrePersonnesCharges = nombrePersonnesCharges;
-	}
-	public Boolean getMutuelle() {
-		return mutuelle;
-	}
-	public void setMutuelle(Boolean mutuelle) {
-		this.mutuelle = mutuelle;
-	}
-	@ManyToOne
-	public Doc getAttestationMutuelle() {
-		return attestationMutuelle;
-	}
-	public void setAttestationMutuelle(Doc attestationMutuelle) {
-		this.attestationMutuelle = attestationMutuelle;
-	}
-	public Date getDateVisiteMedicale() {
-		return dateVisiteMedicale;
-	}
-	public void setDateVisiteMedicale(Date dateVisiteMedicale) {
-		this.dateVisiteMedicale = dateVisiteMedicale;
-	}
-	public Boolean getAllocatairePoleEmploi() {
-		return allocatairePoleEmploi;
-	}
-	public void setAllocatairePoleEmploi(Boolean allocatairePoleEmploi) {
-		this.allocatairePoleEmploi = allocatairePoleEmploi;
-	}
-	@ManyToOne
-	public Doc getRib() {
-		return rib;
-	}
-	public void setRib(Doc rib) {
-		this.rib = rib;
-	}
-	@ManyToOne
-	public Doc getCarteGrise() {
-		return carteGrise;
-	}
-	public void setCarteGrise(Doc carteGrise) {
-		this.carteGrise = carteGrise;
-	}
-	@ManyToOne
-	public Doc getPrevoyance() {
-		return prevoyance;
-	}
-	public void setPrevoyance(Doc prevoyance) {
-		this.prevoyance = prevoyance;
-	}
-	@ManyToOne
-	public Doc getConventionAdhesion() {
-		return conventionAdhesion;
-	}
-	public void setConventionAdhesion(Doc conventionAdhesion) {
-		this.conventionAdhesion = conventionAdhesion;
+	public void setMatricule(String matricule) {
+		this.matricule = matricule;
 	}
 	public String getEmail() {
 		return email;
@@ -229,5 +80,106 @@ public class Consultant {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public Date getDateEntree() {
+		return dateEntree;
+	}
+	public void setDateEntree(Date dateEntree) {
+		this.dateEntree = dateEntree;
+	}
+	public Date getDateFinContratCom() {
+		return dateFinContratCom;
+	}
+	public void setDateFinContratCom(Date dateFinContratCom) {
+		this.dateFinContratCom = dateFinContratCom;
+	}
+	public Date getDateSortiePaie() {
+		return dateSortiePaie;
+	}
+	public void setDateSortiePaie(Date dateSortiePaie) {
+		this.dateSortiePaie = dateSortiePaie;
+	}
+	public Partenaire getPartenaire() {
+		return partenaire;
+	}
+	public void setPartenaire(Partenaire partenaire) {
+		this.partenaire = partenaire;
+	}
+	public String getContact() {
+		return contact;
+	}
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+	public double getTJM() {
+		return TJM;
+	}
+	public void setTJM(double tJM) {
+		TJM = tJM;
+	}
+	public double getForfaitFrais() {
+		return forfaitFrais;
+	}
+	public void setForfaitFrais(double forfaitFrais) {
+		this.forfaitFrais = forfaitFrais;
+	}
+	public Boolean getDUE() {
+		return DUE;
+	}
+	public void setDUE(Boolean dUE) {
+		DUE = dUE;
+	}
+	public TypeContrat getTypeContrat() {
+		return typeContrat;
+	}
+	public void setTypeContrat(TypeContrat typeContrat) {
+		this.typeContrat = typeContrat;
+	}
+	public Boolean getEntreePaie() {
+		return entreePaie;
+	}
+	public void setEntreePaie(Boolean entreePaie) {
+		this.entreePaie = entreePaie;
+	}
+	public Boolean getStcPaie() {
+		return stcPaie;
+	}
+	public void setStcPaie(Boolean stcPaie) {
+		this.stcPaie = stcPaie;
+	}
+	public String getObservation() {
+		return observation;
+	}
+	public void setObservation(String observation) {
+		this.observation = observation;
+	}
+	public double getPlvtIntervia() {
+		return plvtIntervia;
+	}
+	public void setPlvtIntervia(double plvtIntervia) {
+		this.plvtIntervia = plvtIntervia;
+	}
+	public String getLieuActiviteInsee() {
+		return lieuActiviteInsee;
+	}
+	public void setLieuActiviteInsee(String lieuActiviteInsee) {
+		this.lieuActiviteInsee = lieuActiviteInsee;
+	}
+	public Boolean getDavidsonCommission() {
+		return davidsonCommission;
+	}
+	public void setDavidsonCommission(Boolean davidsonCommission) {
+		this.davidsonCommission = davidsonCommission;
+	}
+	public Boolean getCampagnePaie() {
+		return campagnePaie;
+	}
+	public void setCampagnePaie(Boolean campagnePaie) {
+		this.campagnePaie = campagnePaie;
+	}
+	public Fiche getFiche() {
+		return fiche;
+	}
+	public void setFiche(Fiche fiche) {
+		this.fiche = fiche;
+	}
 }

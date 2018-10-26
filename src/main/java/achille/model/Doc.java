@@ -2,7 +2,6 @@ package achille.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table (name="Doc")
-public class Doc implements Serializable{
+public class Doc {
  
 	@Id
 	@GeneratedValue
@@ -25,7 +24,6 @@ public class Doc implements Serializable{
 
 	/** constructor */
 	public Doc() {
-		super();
 	}
 
 	/** get & set */
