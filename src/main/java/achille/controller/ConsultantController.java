@@ -51,26 +51,41 @@ public class ConsultantController {
 	
 	//Insère un consultant
 	@RequestMapping(value ="/consultant",  method=RequestMethod.POST)
-	Consultant create( @RequestBody Consultant c) { 
-		System.out.println(c);
+	Consultant create( @RequestBody Consultant c) {
+		
+		Date insertDate = new Date();
+		
 		if (c.getFiche() != null) {
+			Fiche f = c.getFiche();
+			c.setInsertionDate(insertDate);	
+			c.setFiche(ficheDAO.save(f));
 			c.setFiche(ficheDAO.save(c.getFiche()));
 		}
+		
 		c.setSociete(societeDAO.save(c.getSociete()));
 		c.setTypeContrat(typeContratDAO.save(c.getTypeContrat()));
 		c.setPartenaire(partenaireDAO.save(c.getPartenaire()));
+		
+		c.setInsertionDate(insertDate);
 		return consultantDAO.save(c);
 	}
 	//Insère une liste de consultants
 	@RequestMapping(value ="/consultant/list",  method=RequestMethod.POST)
 	Boolean create( @RequestBody List<Consultant> l_c) {
-				
+		
+		Date insertDate = new Date();
+		
 		for(Consultant c : l_c) {
-			System.out.println(c);
-			c.setFiche(ficheDAO.save(c.getFiche()));
+			
+			Fiche f = c.getFiche();
+			c.setInsertionDate(insertDate);	
+			c.setFiche(ficheDAO.save(f));
+			
 			c.setSociete(societeDAO.save(c.getSociete()));
 			c.setTypeContrat(typeContratDAO.save(c.getTypeContrat()));
 			c.setPartenaire(partenaireDAO.save(c.getPartenaire()));
+			
+			c.setInsertionDate(insertDate);
 			c = consultantDAO.save(c);
 		}
 		
@@ -93,6 +108,7 @@ public class ConsultantController {
 		if(!consultantDAO.existsById(c.getId())) {
 			throw new ConsultantNotFound(c.getId());
 		}
+		c.setInsertionDate(new Date());
 		return consultantDAO.save(c);
 		
 	}

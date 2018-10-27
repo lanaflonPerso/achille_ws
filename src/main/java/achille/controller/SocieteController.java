@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import achille.dao.PartenaireDAO;
+import achille.dao.SocieteDAO;
 import achille.model.Partenaire;
+import achille.model.Societe;
 
 
 @CrossOrigin(origins = "*")
@@ -21,13 +23,13 @@ public class SocieteController {
 	}
 	
 	@Autowired
-	PartenaireDAO partenaireDAO;
+	SocieteDAO societeDAO;
 
 	
 	//Insère une fiche
-		@RequestMapping(value ="/partenaires",  method=RequestMethod.GET)
-		List<Partenaire> findAll() {
-			return  (List<Partenaire>) partenaireDAO.findAll();
+		@RequestMapping(value ="/societe",  method=RequestMethod.GET)
+		List<Societe> findAll() {
+			return  (List<Societe>) societeDAO.findAll();
 		}
 		
 

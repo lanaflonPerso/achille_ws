@@ -8,9 +8,9 @@ import javax.persistence.Table;
 @Table (name="Partenaire")
 public class Partenaire {
 	
-	public Partenaire(String partenaire) {
+	public Partenaire(String value) {
 		super();
-		this.partenaire = partenaire;
+		this.value = value;
 	}
 
 	public Partenaire() {
@@ -19,14 +19,14 @@ public class Partenaire {
 	}
 
 	@Id
-	private String partenaire;
+	private String value;
 
-	public String getPartenaire() {
-		return partenaire;
+	public String getValue() {
+		return value;
 	}
 
-	public void setPartenaire(String partenaire) {
-		this.partenaire = partenaire;
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
 }

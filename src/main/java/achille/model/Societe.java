@@ -8,9 +8,9 @@ import javax.persistence.Table;
 @Table (name="Societe")
 public class Societe {
 	
-	public Societe(String societe) {
+	public Societe(String value) {
 		super();
-		this.societe = societe;
+		this.value = value;
 	}
 
 	public Societe() {
@@ -19,14 +19,14 @@ public class Societe {
 	}
 
 	@Id
-	private String societe;
+	private String value;
 
-	public String getSociete() {
-		return societe;
+	public String getValue() {
+		return value;
 	}
 
-	public void setSociete(String societe) {
-		this.societe = societe;
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
 }

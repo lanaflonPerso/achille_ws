@@ -21,7 +21,8 @@ public class Doc {
 	private StatutDoc statut;
 	private Date date;
 	private String path;
-
+	private Date insertionDate;
+	
 	/** constructor */
 	public Doc() {
 	}
@@ -50,6 +51,14 @@ public class Doc {
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public Date getInsertionDate() {
+		return insertionDate;
+	}
+
+	public void setInsertionDate(Date insertionDate) {
+		this.insertionDate = insertionDate;
 	}
 
 	public enum StatutDoc {

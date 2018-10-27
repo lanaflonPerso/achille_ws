@@ -45,6 +45,7 @@ public class Fiche {
 	private Doc prevoyance;
 	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
 	private Doc conventionAdhesion;
+	private Date insertionDate;
 	
 	public Fiche() {
 		
@@ -167,6 +168,12 @@ public class Fiche {
 	}
 	public void setTitreSejour(Doc titreSejour) {
 		this.titreSejour = titreSejour;
+	}
+	public Date getInsertionDate() {
+		return insertionDate;
+	}
+	public void setInsertionDate(Date insertionDate) {
+		this.insertionDate = insertionDate;
 	}
 	
 }

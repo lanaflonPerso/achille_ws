@@ -43,7 +43,8 @@ public class Consultant {
     private Boolean campagnePaie;
     @OneToOne
     private Fiche fiche;
-	
+	private Date insertionDate;
+    
 	public int getId() {
 		return id;
 	}
@@ -181,5 +182,11 @@ public class Consultant {
 	}
 	public void setFiche(Fiche fiche) {
 		this.fiche = fiche;
+	}
+	public Date getInsertionDate() {
+		return insertionDate;
+	}
+	public void setInsertionDate(Date insertionDate) {
+		this.insertionDate = insertionDate;
 	}
 }

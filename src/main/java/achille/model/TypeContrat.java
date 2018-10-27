@@ -8,9 +8,9 @@ import javax.persistence.Table;
 @Table (name="TypeContrat")
 public class TypeContrat {
 	
-	public TypeContrat(String typeContrat) {
+	public TypeContrat(String value) {
 		super();
-		this.typeContrat = typeContrat;
+		this.value = value;
 	}
 
 	public TypeContrat() {
@@ -19,14 +19,14 @@ public class TypeContrat {
 	}
 
 	@Id
-	private String typeContrat;
+	private String value;
 
-	public String getTypeContrat() {
-		return typeContrat;
+	public String getValue() {
+		return value;
 	}
 
-	public void setTypeContrat(String typeContrat) {
-		this.typeContrat = typeContrat;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 }

@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import achille.dao.PartenaireDAO;
+import achille.dao.TypeContratDAO;
 import achille.model.Partenaire;
+import achille.model.TypeContrat;
 
 
 @CrossOrigin(origins = "*")
@@ -21,13 +23,13 @@ public class TypeContratController {
 	}
 	
 	@Autowired
-	PartenaireDAO partenaireDAO;
+	TypeContratDAO typeContratDAO;
 
 	
 	//Insère une fiche
-		@RequestMapping(value ="/partenaires",  method=RequestMethod.GET)
-		List<Partenaire> findAll() {
-			return  (List<Partenaire>) partenaireDAO.findAll();
+		@RequestMapping(value ="/typeContrat",  method=RequestMethod.GET)
+		List<TypeContrat> findAll() {
+			return  (List<TypeContrat>) typeContratDAO.findAll();
 		}
 		
 
