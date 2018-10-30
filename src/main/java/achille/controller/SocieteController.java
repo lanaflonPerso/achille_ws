@@ -27,7 +27,7 @@ public class SocieteController {
 
 	
 	//Insère une fiche
-		@RequestMapping(value ="/societe",  method=RequestMethod.GET)
+		@RequestMapping(value ="/societes",  method=RequestMethod.GET)
 		List<Societe> findAll() {
 			return  (List<Societe>) societeDAO.findAll();
 		}
