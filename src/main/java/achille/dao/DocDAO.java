@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import achille.model.Doc;
 
 @Repository
-public interface DocumentDAO extends CrudRepository<Doc, Integer> {
+public interface DocDAO extends CrudRepository<Doc, Integer> {
 
 }

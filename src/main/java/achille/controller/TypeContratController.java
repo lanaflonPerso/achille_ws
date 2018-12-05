@@ -27,7 +27,7 @@ public class TypeContratController {
 
 	
 	//Insère une fiche
-		@RequestMapping(value ="/typeContrats",  method=RequestMethod.GET)
+		@RequestMapping(value ="/typeContrat",  method=RequestMethod.GET)
 		List<TypeContrat> findAll() {
 			return  (List<TypeContrat>) typeContratDAO.findAll();
 		}

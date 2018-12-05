@@ -1,6 +1,7 @@
 package achille.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,7 +45,9 @@ public class Consultant {
     @OneToOne
     private Fiche fiche;
 	private Date insertionDate;
-    
+	@OneToOne
+    private Campagne campagne;
+	
 	public int getId() {
 		return id;
 	}
@@ -188,5 +191,11 @@ public class Consultant {
 	}
 	public void setInsertionDate(Date insertionDate) {
 		this.insertionDate = insertionDate;
+	}
+	public Campagne getCampagne() {
+		return campagne;
+	}
+	public void setCampagne(Campagne campagne) {
+		this.campagne = campagne;
 	}
 }

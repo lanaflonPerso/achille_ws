@@ -23,7 +23,7 @@ public class PartenaireController {
 	@Autowired
 	PartenaireDAO partenaireDAO;
 
-	@RequestMapping(value ="/partenaires",  method=RequestMethod.GET)
+	@RequestMapping(value ="/partenaire",  method=RequestMethod.GET)
 	List<Partenaire> findAll() {
 		return  (List<Partenaire>) partenaireDAO.findAll();
 	}

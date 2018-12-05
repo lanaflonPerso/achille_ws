@@ -57,9 +57,13 @@ public class ConsultantController {
 		
 		if (c.getFiche() != null) {
 			Fiche f = c.getFiche();
-			c.setInsertionDate(insertDate);	
+			f.setInsertionDate(insertDate);
+			if (f.getAdresse() != null) {
+				Adresse a = f.getAdresse();
+				a.setInsertionDate(f.getInsertionDate());	
+				f.setAdresse(adresseDAO.save(a));
+			}
 			c.setFiche(ficheDAO.save(f));
-			c.setFiche(ficheDAO.save(c.getFiche()));
 		}
 		
 		c.setSociete(societeDAO.save(c.getSociete()));
@@ -67,6 +71,7 @@ public class ConsultantController {
 		c.setPartenaire(partenaireDAO.save(c.getPartenaire()));
 		
 		c.setInsertionDate(insertDate);
+		
 		return consultantDAO.save(c);
 	}
 	//Insère une liste de consultants
