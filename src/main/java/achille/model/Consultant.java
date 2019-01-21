@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -46,7 +47,7 @@ public class Consultant {
     private Fiche fiche;
 	private Date insertionDate;
 	@OneToOne
-    private List<CampagnePaie> campagne;
+    private Campagne campagne;
 	
 	public int getId() {
 		return id;
@@ -192,10 +193,10 @@ public class Consultant {
 	public void setInsertionDate(Date insertionDate) {
 		this.insertionDate = insertionDate;
 	}
-	public List<CampagnePaie> getCampagne() {
+	public Campagne getCampagne() {
 		return campagne;
 	}
-	public void setCampagne(List<CampagnePaie> campagne) {
+	public void setCampagne(Campagne campagne) {
 		this.campagne = campagne;
 	}
 }
