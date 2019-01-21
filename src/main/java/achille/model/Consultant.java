@@ -46,7 +46,7 @@ public class Consultant {
     private Fiche fiche;
 	private Date insertionDate;
 	@OneToOne
-    private Campagne campagne;
+    private List<CampagnePaie> campagne;
 	
 	public int getId() {
 		return id;
@@ -192,10 +192,10 @@ public class Consultant {
 	public void setInsertionDate(Date insertionDate) {
 		this.insertionDate = insertionDate;
 	}
-	public Campagne getCampagne() {
+	public List<CampagnePaie> getCampagne() {
 		return campagne;
 	}
-	public void setCampagne(Campagne campagne) {
+	public void setCampagne(List<CampagnePaie> campagne) {
 		this.campagne = campagne;
 	}
 }
