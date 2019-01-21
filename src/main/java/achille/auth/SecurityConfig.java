@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 import achille.service.UserService;
 
@@ -43,13 +44,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.authenticationProvider(provider)
 		.authorizeRequests()
 		//.antMatchers("/consultants").permitAll()
-		//.antMatchers("/consultants").hasAuthority("ADMIN")
+		.antMatchers(HttpMethod.OPTIONS, "**").permitAll()
+		.antMatchers("/consultants").hasAuthority("ADMIN")
 		//.antMatchers(HttpMethod.POST,"/consultant/*").hasAnyAuthority("CONSULTANT","ADMIN")
 		//.antMatchers(HttpMethod.POST,"/consultant").hasAuthority("CONSULTANT")
 		.anyRequest().permitAll()
 		.and()
 		.httpBasic();
 		//login mot de passe
+		
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
 }

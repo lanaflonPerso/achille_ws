@@ -2,7 +2,6 @@ package achille;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 public class AchilleApplication {
@@ -11,3 +10,4 @@ public class AchilleApplication {
 		SpringApplication.run(AchilleApplication.class, args);
 	}
 }
+
