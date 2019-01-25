@@ -14,12 +14,12 @@ public class CampagnePaie {
 	@Id
 	@GeneratedValue
 	private int id;
-	private Campagne campagne;
+	/*private Campagne campagne;
 	private Doc rapportActivite;
 	private double joursOuvres;
 	private double astreintes;
 	private Doc noteFraisInterne;
-	private Doc noteFraisFacture;
+	private Doc noteFraisFacture;*/
 
 	
 	

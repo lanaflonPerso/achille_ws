@@ -51,8 +51,8 @@ public class Fiche {
 		
 	}
 	
-	public enum Sexe { m, f; }
-	public enum StatutFamilal { marie, pacs, celibataire; }
+	public enum Sexe { Homme, Femme; }
+	public enum StatutFamilal { Marie, PACS, Celibataire; }
 	public enum Nationalite { FR, EEE, HORS_EEE; }
 	
 	public String getNomJeuneFille() {

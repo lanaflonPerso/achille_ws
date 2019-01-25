@@ -21,18 +21,49 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 	
+	private Properties props;
+	private Session session;
+	private String messageAuto;
+	
+	public EmailService() {
+		
+	   this.props = new Properties();
+	   this.props.put("mail.smtp.auth", "true");
+	   this.props.put("mail.smtp.starttls.enable", "true");
+	   this.props.put("mail.smtp.host", "smtp.gmail.com");
+	   this.props.put("mail.smtp.port", "587");
+	   
+	   this.session = Session.getInstance(props, new javax.mail.Authenticator() {
+	      protected PasswordAuthentication getPasswordAuthentication() {
+	         return new PasswordAuthentication("application.achille@gmail.com", "Eugene2017");
+	      }
+	   });
+	   
+	   this.messageAuto = "Ce message vous a été envoyé automatiquement, merci de ne pas répondre";
+	   
+	}
+	
+	
+	public void sendMail(String subject, String content, String recipient) throws AddressException, MessagingException, IOException {
+		
+	   Message msg = new MimeMessage(session);
+	   msg.setFrom(new InternetAddress(recipient, false));
+	   
+	   String fullContent = content + System.getProperty("line.separator") + System.getProperty("line.separator") + this.messageAuto;
+	   
+	   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
+	   msg.setSubject("[Achille] " + subject);
+	   msg.setContent(fullContent, "text/html");
+	   msg.setSentDate(new Date());
+
+	   Transport.send(msg);   
+
+	}
+	
+	
 	public void sendmail() throws AddressException, MessagingException, IOException {
-		   Properties props = new Properties();
-		   props.put("mail.smtp.auth", "true");
-		   props.put("mail.smtp.starttls.enable", "true");
-		   props.put("mail.smtp.host", "smtp.gmail.com");
-		   props.put("mail.smtp.port", "587");
-		   
-		   Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-		      protected PasswordAuthentication getPasswordAuthentication() {
-		         return new PasswordAuthentication("application.achille@gmail.com", "Eugene2017");
-		      }
-		   });
+
+
 		   Message msg = new MimeMessage(session);
 		   msg.setFrom(new InternetAddress("lemeur.burban@gmail.com", false));
 
@@ -48,9 +79,6 @@ public class EmailService {
 		   multipart.addBodyPart(messageBodyPart);
 		   MimeBodyPart attachPart = new MimeBodyPart();
 
-		   //attachPart.attachFile("/var/tmp/image19.png");
-		   //multipart.addBodyPart(attachPart);
-		   //msg.setContent(multipart);
 		   Transport.send(msg);   
 		}
 

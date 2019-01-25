@@ -15,14 +15,8 @@ INSERT INTO `achille_db`.`societe`(`value`) VALUES ("SINOPIE");
 INSERT INTO `achille_db`.`societe`(`value`) VALUES ("RONDOUDOU");
 
 INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDD");
-INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDD USAGE ETRANGER");
-INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDD USAGE");
-INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDD RETRAITE ?");
 INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDI");
-INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDI INTERNE");
-INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDI / CDIC");
-INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDI RETRAITE");
-INSERT INTO `achille_db`.`type_contrat` (`value`) VALUES ("CDI RETRAITE ?");
+
 
 INSERT INTO `achille_db`.`partenaire` (`value`) VALUES ("2B CONSULTING");
 INSERT INTO `achille_db`.`partenaire` (`value`) VALUES ("8POURCENT");

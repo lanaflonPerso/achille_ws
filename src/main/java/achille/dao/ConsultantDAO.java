@@ -10,3 +10,4 @@ public interface ConsultantDAO extends CrudRepository<Consultant, Integer> {
 
 
 }
+
