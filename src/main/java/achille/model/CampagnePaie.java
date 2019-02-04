@@ -15,7 +15,6 @@ public class CampagnePaie {
 	@GeneratedValue
 	private int id;
 
-
 	private Doc rapportActivite;
 	private double joursOuvres;
 	private double astreintes;
@@ -25,6 +24,4 @@ public class CampagnePaie {
 	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
 	private Doc noteFraisFacture;
 
-	
-	
 }

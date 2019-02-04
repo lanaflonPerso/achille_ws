@@ -35,6 +35,8 @@ public class Fiche {
     private Boolean attestationMutuelle;
     private Date dateVisiteMedicale;
     private Boolean allocatairePoleEmploi;
+    private Date insertionDate;
+    
     @ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
     private Doc titreSejour;
 	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
@@ -45,7 +47,7 @@ public class Fiche {
 	private Doc prevoyance;
 	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
 	private Doc conventionAdhesion;
-	private Date insertionDate;
+	
 	
 	public Fiche() {
 		
