@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import achille.dao.PartenaireDAO;
 import achille.dao.TypeContratDAO;
-import achille.model.Partenaire;
 import achille.model.TypeContrat;
 
 

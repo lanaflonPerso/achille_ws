@@ -1,8 +1,8 @@
 package achille.model;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,7 +22,6 @@ public class Doc {
 	private StatutDoc statut;
 	private Date date;
 	private String path;
-	private Date insertionDate;
 	
 	/** constructor */
 	public Doc(File file, TypeDoc typeDoc, String path) {
@@ -56,12 +55,7 @@ public class Doc {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	public Date getInsertionDate() {
-		return insertionDate;
-	}
-	public void setInsertionDate(Date insertionDate) {
-		this.insertionDate = insertionDate;
-	}
+
 	public enum StatutDoc {
 		fill,
 		missing,

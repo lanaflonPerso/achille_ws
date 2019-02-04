@@ -1,14 +1,12 @@
 package achille.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -46,8 +44,6 @@ public class Consultant {
     @OneToOne
     private Fiche fiche;
 	private Date insertionDate;
-	@OneToOne
-    private Campagne campagne;
 	
 	public int getId() {
 		return id;
@@ -193,10 +189,5 @@ public class Consultant {
 	public void setInsertionDate(Date insertionDate) {
 		this.insertionDate = insertionDate;
 	}
-	public Campagne getCampagne() {
-		return campagne;
-	}
-	public void setCampagne(Campagne campagne) {
-		this.campagne = campagne;
-	}
+
 }

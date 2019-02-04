@@ -77,7 +77,7 @@ public class EmailService {
 
 		   Multipart multipart = new MimeMultipart();
 		   multipart.addBodyPart(messageBodyPart);
-		   MimeBodyPart attachPart = new MimeBodyPart();
+		 
 
 		   Transport.send(msg);   
 		}

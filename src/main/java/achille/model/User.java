@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -28,8 +26,7 @@ public class User implements Serializable , UserDetails {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;   
+    private Integer userId;  
     private String username;
     private String password;
     private String salt;
@@ -54,8 +51,9 @@ public class User implements Serializable , UserDetails {
 		this.authority = authority;
 	}
 
-    public User(String username, String password, String salt) {
+    public User( int consultantId, String username, String password, String salt) {
 		super();
+		this.userId = consultantId;
 		this.username = username;
 		this.password = password;
 		this.salt = salt;
@@ -102,5 +100,6 @@ public class User implements Serializable , UserDetails {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
+
 
 }
