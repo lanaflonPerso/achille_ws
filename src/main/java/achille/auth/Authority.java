@@ -16,7 +16,14 @@ public class Authority implements GrantedAuthority {
 	@Id
 	@Column(length=100)
 	private String authority;
-	
+	public Authority() {
+		super();
+	}
+	public Authority(String authority) {
+		super();
+		this.authority = authority;
+	}
+
 	public String getAuthority() {
 		return authority;
 	}

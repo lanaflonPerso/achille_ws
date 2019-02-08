@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	//On peut ajouter un bean password encoder
 
 	protected void configure(HttpSecurity http) throws Exception {
+
 		//On configure les webServices qui nécessitent une authentification
 		http.csrf()
 		.disable()
@@ -46,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//.antMatchers("/consultants").permitAll()
 		.antMatchers(HttpMethod.OPTIONS, "**").permitAll()
 		.antMatchers("/consultants").hasAuthority("ADMIN")
+		.antMatchers("/consultant/auth").hasAuthority("CONSULTANT")
 		.antMatchers(HttpMethod.POST,"/consultant/*").hasAuthority("ADMIN")
 		.antMatchers(HttpMethod.GET,"/consultant/*").hasAuthority("ADMIN")
 		.antMatchers(HttpMethod.POST,"/fiche").hasAnyAuthority("CONSULTANT","ADMIN")

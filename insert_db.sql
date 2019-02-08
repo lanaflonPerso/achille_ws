@@ -1,12 +1,9 @@
 INSERT INTO `achille_db`.`authority` (`authority`) VALUES ("ADMIN");
 INSERT INTO `achille_db`.`authority` (`authority`) VALUES ("CONSULTANT");
-INSERT INTO `achille_db`.`user` (`user_id`,`username`,`password`) VALUES (9997,"TEST","TEST");
 INSERT INTO `achille_db`.`user` (`user_id`,`username`,`password`) VALUES (9998,"USER1","USER1");
 INSERT INTO `achille_db`.`user` (`user_id`,`username`,`password`) VALUES (9999,"ADMIN","ADMIN");
-INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority`) VALUES ('1', 'ADMIN');
-INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority`) VALUES ('1', 'CONSULTANT');
-INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority`) VALUES ('2', 'CONSULTANT');
-INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority`) VALUES ('3', 'ADMIN');
+INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority`) VALUES ('9999', 'ADMIN');
+INSERT INTO `achille_db`.`user_authority` (`user_user_id`, `authority_authority`) VALUES ('9998', 'CONSULTANT');
 
 INSERT INTO `achille_db`.`societe`(`value`) VALUES ("INTERVIA");
 INSERT INTO `achille_db`.`societe`(`value`) VALUES ("B2M");

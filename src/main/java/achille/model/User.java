@@ -42,9 +42,9 @@ public class User implements Serializable , UserDetails {
     public boolean isAccountNonExpired() {return true;}
     public boolean isAccountNonLocked() { return true;}
     
-    public User(Integer userId, String username, String password, String salt, List<Authority> authority) {
+    public User(int consultantId, String username, String password, String salt, List<Authority> authority) {
 		super();
-		this.userId = userId;
+		this.userId = consultantId;
 		this.username = username;
 		this.password = password;
 		this.salt = salt;

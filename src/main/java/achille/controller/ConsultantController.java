@@ -1,6 +1,7 @@
 package achille.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import achille.auth.Authority;
 import achille.dao.AdresseDAO;
 import achille.dao.ConsultantDAO;
 import achille.dao.FicheDAO;
@@ -110,6 +112,19 @@ public class ConsultantController {
 
 		return false;
 	}
+	
+	//Retourne un consultant
+		@RequestMapping(value ="/consultant/auth/{username}",  method=RequestMethod.GET)
+		Optional<Consultant>  consultantAuth(@PathVariable(value="username", required=true) String username) {
+			System.out.println("Reccupération du consultant");
+			if(!userDAO.existsByUsername(username)) {
+				throw new ConsultantNotFound(username);
+			}
+			User u = userDAO.findByUsername(username);
+			return consultantDAO.findById(u.getUserId());
+		}
+
+
 
 	// Update un consultant
 	@RequestMapping(value ="/consultant",  method=RequestMethod.PUT)
@@ -175,7 +190,9 @@ public class ConsultantController {
 		String passwordGenerated = pwdGen.generatePassword().toString();
 		String password = PasswordUtils.generateSecurePassword(passwordGenerated, salt);
 
-		User u = new User(c.getId(), c.getNom() + c.getMatricule(), password, salt);
+		List<Authority> la = new ArrayList<Authority>();
+		la.add(new Authority("CONSULTANT"));
+		User u = new User(c.getId(), c.getNom() + c.getMatricule(), password, salt, la);
 		userDAO.save(u);
 
 		EmailService em = new EmailService();

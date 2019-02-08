@@ -11,4 +11,8 @@ public interface UserDAO extends CrudRepository<User,Integer>{
 	@Query(" select u from User u " +
 			" where u.username = ?1")
 			Optional<User> findUserWithName(String username);
+
+	boolean existsByUsername(String username);
+
+	User findByUsername(String username);
 }

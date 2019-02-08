@@ -14,4 +14,8 @@ public class ConsultantNotFound extends RuntimeException {
 		super("Le consultant " + id + " n'a pas été trouvé.");
 	}
 
+	public ConsultantNotFound(String username) {
+		super("Le consultant " + username + " n'a pas été trouvé.");
+	}
+
 }
