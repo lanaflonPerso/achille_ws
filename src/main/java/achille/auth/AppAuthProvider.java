@@ -39,9 +39,6 @@ public class AppAuthProvider extends DaoAuthenticationProvider {
 				throw new BadCredentialsException("l/p does not match for " + auth.getPrincipal());
 			}
 		} else {
-			System.out.println("password " + password);
-			System.out.println("secured password " + user.getPassword());
-			System.out.println("salt  " + user.getSalt());
 			if (!PasswordUtils.verifyUserPassword(password, user.getPassword(), user.getSalt())) {
 				throw new BadCredentialsException("l/p does not match for " + auth.getPrincipal());
 			}

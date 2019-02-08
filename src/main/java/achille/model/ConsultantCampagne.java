@@ -1,10 +1,14 @@
 package achille.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,7 +26,8 @@ public class ConsultantCampagne {
 	private Date date;
 	private Etat etat;
 	// Documents
-	private int idDocCampagne;
+	 @ManyToMany(fetch=FetchType.EAGER)
+	private List<Doc> documentsCampagne = new ArrayList<Doc>();
 	// Information
 	private double nbJourOuvree;
 	private double astreinte;
@@ -52,11 +57,12 @@ public class ConsultantCampagne {
 	public void setEtat(Etat etat) {
 		this.etat = etat;
 	}
-	public int getIdDocCampagne() {
-		return idDocCampagne;
+
+	public List<Doc> getDocumentsCampagne() {
+		return documentsCampagne;
 	}
-	public void setIdDocCampagne(int idDocCampagne) {
-		this.idDocCampagne = idDocCampagne;
+	public void setDocumentsCampagne(List<Doc> documentsCampagne) {
+		this.documentsCampagne = documentsCampagne;
 	}
 	public int getId() {
 		return id;
@@ -81,18 +87,18 @@ public class ConsultantCampagne {
 	public ConsultantCampagne() {
 		super();
 	}
-	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Etat etat, int idDocCampagne,
-			double nbJourOuvree, double astreinte) {
+	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Date date, Etat etat,
+			List<Doc> documentsCampagne, double nbJourOuvree, double astreinte) {
 		super();
 		this.id = id;
 		this.consultant = consultant;
 		this.campagne = campagne;
+		this.date = date;
 		this.etat = etat;
-		this.idDocCampagne = idDocCampagne;
+		this.documentsCampagne = documentsCampagne;
 		this.nbJourOuvree = nbJourOuvree;
 		this.astreinte = astreinte;
 	}
-
 
 
 

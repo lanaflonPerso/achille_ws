@@ -39,7 +39,15 @@ public class User implements Serializable , UserDetails {
     	return  authority;
     }
 
-    public boolean isAccountNonExpired() {return true;}
+    public List<Authority> getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(List<Authority> authority) {
+		this.authority = authority;
+	}
+
+	public boolean isAccountNonExpired() {return true;}
     public boolean isAccountNonLocked() { return true;}
     
     public User(int consultantId, String username, String password, String salt, List<Authority> authority) {
@@ -64,16 +72,12 @@ public class User implements Serializable , UserDetails {
     
     public User() {}
     
-    public User(String username) {
-    	
-    	super();
-    	
-    	this.username = username;
-    	
+    public User(String username) {    	
+    	super();    	
+    	this.username = username;    	
     	this.salt = PasswordUtils.getSalt(30);
     	PasswordGenerator pwdGen = new PasswordGenerator(4, 12);
-    	this.password = PasswordUtils.generateSecurePassword(pwdGen.generatePassword().toString(), salt);
-    	
+    	this.password = PasswordUtils.generateSecurePassword(pwdGen.generatePassword().toString(), salt);    	
     }
      
 	public Integer getUserId() {
