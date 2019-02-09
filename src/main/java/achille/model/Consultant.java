@@ -44,6 +44,7 @@ public class Consultant {
     @OneToOne
     private Fiche fiche;
 	private Date insertionDate;
+	private Boolean sendMail;
 	
 	public int getId() {
 		return id;
@@ -189,5 +190,12 @@ public class Consultant {
 	public void setInsertionDate(Date insertionDate) {
 		this.insertionDate = insertionDate;
 	}
+	public Boolean getSendMail() {
+		return sendMail;
+	}
+	public void setSendMail(Boolean sendMail) {
+		this.sendMail = sendMail;
+	}
+	
 
 }

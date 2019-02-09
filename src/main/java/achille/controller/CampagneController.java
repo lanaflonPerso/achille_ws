@@ -6,14 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import achille.dao.CampagneDAO;
 import achille.exception.CampagneException;
-import achille.exception.CampagneNotFound;
 import achille.model.Campagne;
 import achille.service.CampagneService;
 
@@ -75,12 +73,7 @@ public class CampagneController {
 	//Insère une novuelle campagne
 	@RequestMapping(value ="/campagne/nouvelle",  method=RequestMethod.POST)
 	Campagne create( ) throws IOException, CampagneException {
-		if (!campagneDAO.findByEtat("O").isEmpty()) {
-			throw new CampagneException("Il y a déjà une campagne ouverte actuellement");
-		}
 		return campagneService.creerNouvelleCampagne();
-
-
 	}
 
 

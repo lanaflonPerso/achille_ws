@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import achille.auth.Authority;
@@ -20,7 +20,7 @@ import achille.dao.PartenaireDAO;
 import achille.dao.SocieteDAO;
 import achille.dao.TypeContratDAO;
 import achille.dao.UserDAO;
-import achille.exception.DroitException;
+import achille.exception.ConsultantNotFound;
 import achille.model.Adresse;
 import achille.model.Consultant;
 import achille.model.Fiche;
@@ -106,15 +106,17 @@ public class ConsultantService {
 		return true;
 
 	}
+
+
+	public Consultant getConsultantById(int idConsultant) {
+		 Optional<Consultant> consultant = consultantDAO.findById(idConsultant);
+		 if(consultant.isPresent()) {
+			 return consultant.get();
+		 }else {
+			 throw new ConsultantNotFound(idConsultant);
+		 }
+		
 	
-	public void consultantAutorise(int id, Authentication authentication) {
-		User user = (User) authentication.getPrincipal();
-		String role = user.getAuthority().get(0).getAuthority();
-		if (role.equals("CONSULTANT")) {
-			if (id != user.getUserId()) {
-				throw new DroitException();
-			}
-		}
 	}
 
 

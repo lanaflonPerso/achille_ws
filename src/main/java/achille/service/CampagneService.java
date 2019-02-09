@@ -3,6 +3,7 @@ package achille.service;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,19 @@ public class CampagneService {
 		}
 		return campagneDAO.save(c);
 	}
+
+	public Campagne getCampagneOuverte() throws CampagneException {
+		List<Campagne> campagnesOuverte = campagneDAO.findByEtat("O");
+		//Normalement il n'y a qu'une seule campagne d'ouverte à la fois, on prend la première
+		if (campagnesOuverte.isEmpty()) {
+			throw new CampagneException("Il n'y a pas de campagne ouverte");
+		}else {
+			if (campagnesOuverte.size()>1) {
+				throw new CampagneException("Il y a plus d'une campagne ouverte");
+			}			
+		}
+		return campagnesOuverte.get(0);
+	}
+
 
 }
