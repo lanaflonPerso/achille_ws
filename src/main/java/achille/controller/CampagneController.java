@@ -4,20 +4,16 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.querydsl.core.types.Predicate;
-
 import achille.dao.CampagneDAO;
 import achille.exception.CampagneExisteDeja;
 import achille.exception.CampagneNotFound;
 import achille.model.Campagne;
-import achille.service.CampagneService;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -25,8 +21,7 @@ public class CampagneController {
 
 	@Autowired
 	CampagneDAO campagneDAO; 
-	@Autowired
-	CampagneService campagneService;
+
 
 	//Retourne la liste de toutes les campagnes
 	@RequestMapping(value ="/campagnes")
