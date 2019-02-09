@@ -1,5 +1,8 @@
 package achille.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +64,17 @@ public class ConsultantCampagneService {
 		consultantCampagneDAO.save(cc);
 		return consultantCampagneDAO.findByCampagneAndConsultant(cc.getCampagne(),cc.getConsultant()).get();
 
+	}
+
+	public Map<Integer, String> getMapConsultantCampagneCouranteEtat() throws CampagneException {
+		Campagne campagneCourante = campagneService.getCampagneOuverte();
+		List<ConsultantCampagne> list = consultantCampagneDAO.findAllByCampagne(campagneCourante);
+		Map<Integer,String> retour = new HashMap<>();
+		for (ConsultantCampagne consultantCampagne : list) {
+			retour.put(consultantCampagne.getConsultant().getId(), consultantCampagne.getEtat());
+			
+		}
+		return retour;
 	}
 
 	

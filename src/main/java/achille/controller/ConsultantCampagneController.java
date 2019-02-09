@@ -1,5 +1,7 @@
 package achille.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -42,6 +44,13 @@ public class ConsultantCampagneController {
 	ConsultantCampagne updateConsultantCampagneCourante(@RequestBody ConsultantCampagne cc, Authentication authentication ) throws ConsultantCampagneException, CampagneException {
 		AuthUtils.consultantAutorise(cc.getConsultant().getId(), authentication);
 		return consultantCampagneService.modifierConsultantCampagne(cc);
+	}
+	
+	
+	// Serivce qui renvoie une map avec l'idconsultant et l'état de la campagne courante
+	@RequestMapping(value ="/consultant-campagne/map-consultant-etat")
+	Map<Integer,String> getMapConsultantCampagne() throws CampagneException{
+		return consultantCampagneService.getMapConsultantCampagneCouranteEtat();
 	}
 
 
