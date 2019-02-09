@@ -3,7 +3,6 @@ package achille.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,12 +11,11 @@ import javax.persistence.Table;
 public class Campagne {
 	
 	@Id
-	@GeneratedValue
 	private int idCampagne;
 	private int moisCampagne;
 	private int anneeCampagne;
 	private Date dateOuverture; 
-	private EtatCampagne etat;		
+	private String etat;		
 	
 
 	//Constructeurs
@@ -25,7 +23,7 @@ public class Campagne {
 		super();
 	}
 	
-	public Campagne(int idCampagne, int moisCampagne, int anneeCampagne, Date dateOuverture, EtatCampagne etat) {
+	public Campagne(int idCampagne, int moisCampagne, int anneeCampagne, Date dateOuverture, String etat) {
 		super();
 		this.idCampagne = idCampagne;
 		this.moisCampagne = moisCampagne;
@@ -67,15 +65,14 @@ public class Campagne {
 		this.dateOuverture = dateOuverture;
 	}
 
-	public EtatCampagne getEtat() {
+	public String getEtat() {
 		return etat;
 	}
 
-	public void setEtat(EtatCampagne etat) {
+	public void setEtat(String etat) {
 		this.etat = etat;
 	}
 
 
-	public enum EtatCampagne { O, F; }
 
 }

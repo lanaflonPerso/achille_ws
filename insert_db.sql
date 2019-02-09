@@ -259,3 +259,7 @@ INSERT INTO `achille_db`.`partenaire` (`value`) VALUES ("YELE");
 INSERT INTO `achille_db`.`partenaire` (`value`) VALUES ("YOMEVA");
 INSERT INTO `achille_db`.`partenaire` (`value`) VALUES ("YOSEMITE INVEST");
 INSERT INTO `achille_db`.`partenaire` (`value`) VALUES ("YVES SAINT LAURENT BEAUTE");
+
+INSERT INTO `achille_db`.`campagne` (`id_campagne`,`annee_campagne`,`date_ouverture`,`etat`,`mois_campagne`)
+VALUES (201901,2019,"2019-01-01","O",1);
+
