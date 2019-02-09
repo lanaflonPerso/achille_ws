@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table (name="consultant_campagne")
@@ -24,13 +25,19 @@ public class ConsultantCampagne {
 	@OneToOne
 	private Campagne campagne;
 	private Date date;
-	private Etat etat;
+	private String etat;
 	// Documents
 	 @ManyToMany(fetch=FetchType.EAGER)
 	private List<Doc> documentsCampagne = new ArrayList<Doc>();
 	// Information
 	private double nbJourOuvree;
 	private double astreinte;
+	@Transient
+	private Boolean aRapportActivite;
+	@Transient
+	private Boolean aNoteDeFrais;
+	@Transient
+	private Boolean aNoteDeFraisFacture;
 
 	//Getter et setter
 	public Date getDate() {
@@ -51,10 +58,10 @@ public class ConsultantCampagne {
 	public void setCampagne(Campagne campagne) {
 		this.campagne = campagne;
 	}
-	public Etat getEtat() {
+	public String getEtat() {
 		return etat;
 	}
-	public void setEtat(Etat etat) {
+	public void setEtat(String etat) {
 		this.etat = etat;
 	}
 
@@ -87,7 +94,7 @@ public class ConsultantCampagne {
 	public ConsultantCampagne() {
 		super();
 	}
-	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Date date, Etat etat,
+	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Date date, String etat,
 			List<Doc> documentsCampagne, double nbJourOuvree, double astreinte) {
 		super();
 		this.id = id;

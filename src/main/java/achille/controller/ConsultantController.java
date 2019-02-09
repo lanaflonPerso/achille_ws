@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import achille.auth.AuthUtils;
 import achille.dao.AdresseDAO;
 import achille.dao.ConsultantDAO;
 import achille.dao.FicheDAO;
@@ -76,7 +77,7 @@ public class ConsultantController {
 	// Retourne un consultant : ADMIN ou CONSULTANT
 	@RequestMapping(value = "/consultant/{id}", method = RequestMethod.GET)
 	Optional<Consultant> find(@PathVariable(value = "id", required = true) int id, Authentication authentication) {
-		consultantService.consultantAutorise(id, authentication);
+		AuthUtils.consultantAutorise(id, authentication);
 		if (!consultantDAO.existsById(id)) {
 			throw new ConsultantNotFound(id);
 		}
@@ -88,7 +89,7 @@ public class ConsultantController {
 	// Update un consultant : ADMIN ou CONSULTANT
 	@RequestMapping(value = "/consultant", method = RequestMethod.PUT)
 	Consultant update(@RequestBody Consultant c, Authentication authentication) {
-		consultantService.consultantAutorise(c.getId(), authentication);
+		AuthUtils.consultantAutorise(c.getId(), authentication);
 		if (!consultantDAO.existsById(c.getId())) {
 			throw new ConsultantNotFound(c.getId());
 		}

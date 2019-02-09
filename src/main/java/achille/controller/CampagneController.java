@@ -73,12 +73,7 @@ public class CampagneController {
 	//Insère une novuelle campagne
 	@RequestMapping(value ="/campagne/nouvelle",  method=RequestMethod.POST)
 	Campagne create( ) throws IOException, CampagneException {
-		if (!campagneDAO.findByEtat("O").isEmpty()) {
-			throw new CampagneException("Il y a déjà une campagne ouverte actuellement");
-		}
 		return campagneService.creerNouvelleCampagne();
-
-
 	}
 
 
