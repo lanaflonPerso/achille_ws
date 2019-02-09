@@ -15,6 +15,7 @@ import achille.dao.CampagneDAO;
 import achille.exception.CampagneException;
 import achille.exception.CampagneNotFound;
 import achille.model.Campagne;
+import achille.service.CampagneService;
 
 @CrossOrigin(origins = "*")
 @RestController
