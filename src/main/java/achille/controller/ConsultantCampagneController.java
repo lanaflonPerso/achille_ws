@@ -49,7 +49,7 @@ public class ConsultantCampagneController {
 	
 	// Serivce qui renvoie une map avec l'idconsultant et l'état de la campagne courante
 	@RequestMapping(value ="/consultant-campagne/map-consultant-etat")
-	Map<Integer,String> getMapConsultantCampagne() throws CampagneException{
+	Map<Integer,Integer> getMapConsultantCampagne() throws CampagneException{
 		return consultantCampagneService.getMapConsultantCampagneCouranteEtat();
 	}
 
