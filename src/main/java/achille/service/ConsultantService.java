@@ -92,16 +92,16 @@ public class ConsultantService {
 		la.add(new Authority("CONSULTANT"));
 		User u = new User(c.getId(), c.getNom() + c.getMatricule(), password, salt, la);
 		userDAO.save(u);
+		
+		if (c.getSendMail()) {
+			EmailService em = new EmailService();
+			String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "
+					+ c.getMatricule() + System.getProperty("line.separator") + "mot de passe : " + passwordGenerated;
+			String subject = "Création de compte";
+			String recipient = c.getEmail();
 
-		EmailService em = new EmailService();
-		String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "
-				+ c.getMatricule() + System.getProperty("line.separator") + "mot de passe : " + passwordGenerated;
-		String subject = "Création de compte";
-		String recipient = c.getEmail();
-
-		em.sendMail(subject, content, recipient);
-
-		consultantDAO.save(c);
+			em.sendMail(subject, content, recipient);
+		}
 
 		return true;
 
