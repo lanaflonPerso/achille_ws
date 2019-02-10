@@ -16,7 +16,7 @@ public interface ConsultantCampagneDAO extends CrudRepository<ConsultantCampagne
 	List<Campagne> findByCampagne(String c);
 
 	
-	Optional<ConsultantCampagne> findByCampagneAndConsultant(Campagne campagneCourante, Consultant consultant);
+	List<ConsultantCampagne> findByCampagneAndConsultant(Campagne campagneCourante, Consultant consultant);
 
 
 	Optional<ConsultantCampagne> findByCampagneIdCampagneAndConsultantId(int i,

@@ -1,5 +1,6 @@
 package achille.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,32 +45,42 @@ public class ConsultantCampagneService {
 	}
 
 	public ConsultantCampagne creerConsultantCampagne(ConsultantCampagne cc) throws ConsultantCampagneException, CampagneException {
-		if (consultantCampagneDAO.findByCampagneAndConsultant(cc.getCampagne(),cc.getConsultant()).isPresent()) {
+		cc.setCampagne(campagneService.getCampagneOuverte());
+		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));	
+		if (consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(cc.getCampagne().getIdCampagne(),cc.getConsultant().getId()).isPresent()) {
 			throw new ConsultantCampagneException("La campagne existe déjà pour ce consultant");
 		}
-		cc.setCampagne(campagneService.getCampagneOuverte());	
-		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));
-		consultantCampagneDAO.save(cc);
-		return consultantCampagneDAO.findByCampagneAndConsultant(cc.getCampagne(),cc.getConsultant()).get();
+			
+			
+		cc.setDate(new Date());
+		//Etat "Renseigné"
+		cc.setEtat(2);
+		return consultantCampagneDAO.save(cc);
 	}
 
 	public ConsultantCampagne modifierConsultantCampagne(ConsultantCampagne cc) throws ConsultantCampagneException, CampagneException {
-		if (!consultantCampagneDAO.findByCampagneAndConsultant(cc.getCampagne(),cc.getConsultant()).isPresent()) {
-			throw new ConsultantCampagneException("Modification impossible : La campagne n'existe pas pour ce consultant");
-		}
-		//TODO : Si tous les updates ne sont pas autorisés, à mettre ici les contrôles
-		//TODO : Vérifier que l'on garde bien l'historique des documents
 		cc.setCampagne(campagneService.getCampagneOuverte());	
 		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));
-		consultantCampagneDAO.save(cc);
-		return consultantCampagneDAO.findByCampagneAndConsultant(cc.getCampagne(),cc.getConsultant()).get();
+		if (consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(cc.getCampagne().getIdCampagne(),cc.getConsultant().getId()).isPresent()) {
+			ConsultantCampagne consCampExistant = consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(cc.getCampagne().getIdCampagne(),cc.getConsultant().getId()).get();
+			cc.setId(consCampExistant.getId());
+			cc.setDate(new Date());
+			//Etat "Modifié"
+			cc.setEtat(0);
+			//TODO : Si tous les updates ne sont pas autorisés, à mettre ici les contrôles
+			//TODO : Vérifier que l'on garde bien l'historique des documents
 
+			return  consultantCampagneDAO.save(cc);
+		}else {
+			throw new ConsultantCampagneException("Modification impossible : La campagne n'existe pas pour ce consultant");
+		}
+		
 	}
 
-	public Map<Integer, String> getMapConsultantCampagneCouranteEtat() throws CampagneException {
+	public Map<Integer, Integer> getMapConsultantCampagneCouranteEtat() throws CampagneException {
 		Campagne campagneCourante = campagneService.getCampagneOuverte();
 		List<ConsultantCampagne> list = consultantCampagneDAO.findAllByCampagne(campagneCourante);
-		Map<Integer,String> retour = new HashMap<>();
+		Map<Integer, Integer> retour = new HashMap<>();
 		for (ConsultantCampagne consultantCampagne : list) {
 			retour.put(consultantCampagne.getConsultant().getId(), consultantCampagne.getEtat());
 			

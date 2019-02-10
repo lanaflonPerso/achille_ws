@@ -25,7 +25,7 @@ public class ConsultantCampagne {
 	@OneToOne
 	private Campagne campagne;
 	private Date date;
-	private String etat;
+	private int etat;
 	// Documents
 	 @ManyToMany(fetch=FetchType.EAGER)
 	private List<Doc> documentsCampagne = new ArrayList<Doc>();
@@ -58,10 +58,10 @@ public class ConsultantCampagne {
 	public void setCampagne(Campagne campagne) {
 		this.campagne = campagne;
 	}
-	public String getEtat() {
+	public int getEtat() {
 		return etat;
 	}
-	public void setEtat(String etat) {
+	public void setEtat(int etat) {
 		this.etat = etat;
 	}
 
@@ -94,7 +94,7 @@ public class ConsultantCampagne {
 	public ConsultantCampagne() {
 		super();
 	}
-	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Date date, String etat,
+	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Date date, int etat,
 			List<Doc> documentsCampagne, double nbJourOuvree, double astreinte) {
 		super();
 		this.id = id;
