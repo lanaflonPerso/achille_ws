@@ -21,60 +21,60 @@ import achille.exception.StorageException;
 import achille.exception.StorageFileNotFoundException;
 
 @Service
-public class FileSystemStorageService implements StorageService {
+public class FileSystemStorageService  {
 
-    private final Path rootLocation;
+   @Autowired
+   StorageProperties properties;
 
-    @Autowired
-    public FileSystemStorageService(StorageProperties properties) {
-        this.rootLocation = Paths.get(properties.getLocation());
-    }
 
-    @Override
-    public void store(MultipartFile file) {
+    public void store(MultipartFile file, String nomFichier, Path rootLocation) {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Impossible de stocker le fichier vide " + filename);
             }
-            if (filename.contains("..")) {
+            if (nomFichier.contains("..")) {
                 // This is a security check
                 throw new StorageException(
                         "Impossible de stocker un fichier avec un chemin relatif dans le répertoire courant "
-                                + filename);
+                                + nomFichier);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(filename),
+            	if (!Files.exists(rootLocation)) {
+                	Files.createDirectories(rootLocation);
+            	}
+                Files.copy(inputStream, rootLocation.resolve(nomFichier),
                     StandardCopyOption.REPLACE_EXISTING);
             }
         }
         catch (IOException e) {
-            throw new StorageException("L'enregistrement du fichier " + filename + " a échoué", e);
+            throw new StorageException("L'enregistrement du fichier " + nomFichier + " a échoué", e);
         }
     }
 
-    @Override
-    public Stream<Path> loadAll() {
+    public Stream<Path> loadAll( String userName, int idCampagne) {
         try {
-            return Files.walk(this.rootLocation, 1)
-                .filter(path -> !path.equals(this.rootLocation))
-                .map(this.rootLocation::relativize);
+        	Path rootLocation = Paths.get(properties.getLocation(userName, idCampagne));
+            return Files.walk(rootLocation, 1)
+                .filter(path -> !path.equals(rootLocation))
+                .map(rootLocation::relativize);
         }
         catch (IOException e) {
             throw new StorageException("Impossible de lire les fichiers stockés", e);
         }
 
     }
+    
 
-    @Override
-    public Path load(String filename) {
+    public Path load(String filename, String userName, int idCampagne) {
+    	Path rootLocation = Paths.get(properties.getLocation(userName, idCampagne));
         return rootLocation.resolve(filename);
     }
 
-    @Override
-    public Resource loadAsResource(String filename) {
+
+    public Resource loadAsResource(String filename, String userName, int idCampagne) {
         try {
-            Path file = load(filename);
+            Path file = load(filename, userName, idCampagne);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;
@@ -90,18 +90,13 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
-    @Override
-    public void deleteAll() {
+
+    public void deleteAll(String userName, int idCampagne) {
+    	Path rootLocation = Paths.get(properties.getLocation(userName, idCampagne));
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
-    @Override
-    public void init() {
-        try {
-            Files.createDirectories(rootLocation);
-        }
-        catch (IOException e) {
-            throw new StorageException("Impossible d'initialiser le stockage", e);
-        }
-    }
+
+	
+
 }

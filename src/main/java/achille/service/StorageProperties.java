@@ -1,5 +1,6 @@
 package achille.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +11,11 @@ public class StorageProperties {
     /**
      * Folder location for storing files
      */
-    private String location = "C:\\Users\\Arnaud\\projet\\StorageFile";
+	@Value("${achille.path.storage}")
+    private String location;
 
-    public String getLocation() {
-        return location;
+    public String getLocation(String repertoireUser, int idCampagne) {
+        return location+"\\"+repertoireUser+"\\"+idCampagne;
     }
 
     public void setLocation(String location) {

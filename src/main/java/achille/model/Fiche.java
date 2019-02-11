@@ -37,16 +37,16 @@ public class Fiche {
     private Boolean allocatairePoleEmploi;
     private Date insertionDate;
     
-    @ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-    private Doc titreSejour;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc rib;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc carteGrise;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc prevoyance;
-	@ManyToOne(targetEntity=Doc.class, fetch=FetchType.EAGER)
-	private Doc conventionAdhesion;
+    @ManyToOne(targetEntity=Document.class, fetch=FetchType.EAGER)
+    private Document titreSejour;
+	@ManyToOne(targetEntity=Document.class, fetch=FetchType.EAGER)
+	private Document rib;
+	@ManyToOne(targetEntity=Document.class, fetch=FetchType.EAGER)
+	private Document carteGrise;
+	@ManyToOne(targetEntity=Document.class, fetch=FetchType.EAGER)
+	private Document prevoyance;
+	@ManyToOne(targetEntity=Document.class, fetch=FetchType.EAGER)
+	private Document conventionAdhesion;
 	
 	
 	public Fiche() {
@@ -165,10 +165,10 @@ public class Fiche {
 	public void setAllocatairePoleEmploi(Boolean allocatairePoleEmploi) {
 		this.allocatairePoleEmploi = allocatairePoleEmploi;
 	}
-	public Doc getTitreSejour() {
+	public Document getTitreSejour() {
 		return titreSejour;
 	}
-	public void setTitreSejour(Doc titreSejour) {
+	public void setTitreSejour(Document titreSejour) {
 		this.titreSejour = titreSejour;
 	}
 	public Date getInsertionDate() {

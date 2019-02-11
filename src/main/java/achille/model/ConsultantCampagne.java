@@ -28,7 +28,7 @@ public class ConsultantCampagne {
 	private int etat;
 	// Documents
 	 @ManyToMany(fetch=FetchType.EAGER)
-	private List<Doc> documentsCampagne = new ArrayList<Doc>();
+	private List<Document> documentsCampagne = new ArrayList<Document>();
 	// Information
 	private double nbJourOuvree;
 	private double astreinte;
@@ -65,10 +65,10 @@ public class ConsultantCampagne {
 		this.etat = etat;
 	}
 
-	public List<Doc> getDocumentsCampagne() {
+	public List<Document> getDocumentsCampagne() {
 		return documentsCampagne;
 	}
-	public void setDocumentsCampagne(List<Doc> documentsCampagne) {
+	public void setDocumentsCampagne(List<Document> documentsCampagne) {
 		this.documentsCampagne = documentsCampagne;
 	}
 	public int getId() {
@@ -95,7 +95,7 @@ public class ConsultantCampagne {
 		super();
 	}
 	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Date date, int etat,
-			List<Doc> documentsCampagne, double nbJourOuvree, double astreinte) {
+			List<Document> documentsCampagne, double nbJourOuvree, double astreinte) {
 		super();
 		this.id = id;
 		this.consultant = consultant;
@@ -105,6 +105,11 @@ public class ConsultantCampagne {
 		this.documentsCampagne = documentsCampagne;
 		this.nbJourOuvree = nbJourOuvree;
 		this.astreinte = astreinte;
+	}
+	public void setDocument(Document doc) {
+		this.documentsCampagne.add(doc);
+	
+		
 	}
 
 

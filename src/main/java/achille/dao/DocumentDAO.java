@@ -3,9 +3,9 @@ package achille.dao;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import achille.model.Doc;
+import achille.model.Document;
 
 @Repository
-public interface DocDAO extends CrudRepository<Doc, Integer> {
+public interface DocumentDAO extends CrudRepository<Document, Integer> {
 
 }

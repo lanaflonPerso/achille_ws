@@ -266,4 +266,6 @@ INSERT INTO `achille_db`.`consultant_campagne`(`id`,`astreinte`,`date`,`etat`,`n
 VALUES (999989,2,"2019-01-01",1,20,201901,6);
 
 
-
+delete from `achille_db`.`consultant_campagne_documents_campagne` where consultant;
+delete from `achille_db`.`consultant_campagne` where consultant_id=3;
+delete from `achille_db`.`doc` ;

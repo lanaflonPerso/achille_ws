@@ -4,10 +4,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import achille.dao.ConsultantCampagneDAO;
 import achille.exception.CampagneException;
@@ -15,6 +16,7 @@ import achille.exception.ConsultantCampagneException;
 import achille.model.Campagne;
 import achille.model.Consultant;
 import achille.model.ConsultantCampagne;
+import achille.model.Document;
 
 @Service
 public class ConsultantCampagneService {
@@ -25,67 +27,88 @@ public class ConsultantCampagneService {
 	ConsultantCampagneDAO consultantCampagneDAO;
 	@Autowired
 	CampagneService campagneService;
+	@Autowired
+	DocumentService documentService;
 
+	
 	public ConsultantCampagne  getConsultantCampagneCourante(int idConsultant) throws ConsultantCampagneException, CampagneException {
 		// 0 - On récupère le consultant
 		Consultant consultant= consultantService.getConsultantById(idConsultant);
 		// 1 - On recherche la campagne courante
 		Campagne campagneCourante = campagneService.getCampagneOuverte();
 		// 2 - On cherche en base de donnée le consultantCampagne correspondant
-		Optional<ConsultantCampagne> consultantCampagne = consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(campagneCourante.getIdCampagne(),consultant.getId());
+		List<ConsultantCampagne> listConsultantCampagne = consultantCampagneDAO.findByCampagneAndConsultant(campagneCourante,consultant);
 		// Si il existe  :
-		if (consultantCampagne.isPresent()) {
-			ConsultantCampagne retour = consultantCampagne.get();
-			// on récupère la liste de documents associés				
-			// on l'enrichi avec les trois booleans calculé
+		if (listConsultantCampagne.size()>0) {
+			//On récupère la version la plus récente de consultant campagne
+			ConsultantCampagne retour = listConsultantCampagne.stream().max((c1,c2) -> c1.getDate().compareTo(c2.getDate())).get();
 			return retour;
 		}else {		
 			throw new ConsultantCampagneException("Il n'y a pas de campagne ouverte associée à ce consultant");
 		}
 	}
 
-	public ConsultantCampagne creerConsultantCampagne(ConsultantCampagne cc) throws ConsultantCampagneException, CampagneException {
-		cc.setCampagne(campagneService.getCampagneOuverte());
-		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));	
-		if (consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(cc.getCampagne().getIdCampagne(),cc.getConsultant().getId()).isPresent()) {
-			throw new ConsultantCampagneException("La campagne existe déjà pour ce consultant");
+	public List<ConsultantCampagne>  getConsultantCampagneCouranteHistorique(int idConsultant) throws ConsultantCampagneException, CampagneException {
+		// 0 - On récupère le consultant
+		Consultant consultant= consultantService.getConsultantById(idConsultant);
+		// 1 - On recherche la campagne courante
+		Campagne campagneCourante = campagneService.getCampagneOuverte();
+		// 2 - On cherche en base de donnée le consultantCampagne correspondant
+		List<ConsultantCampagne> listConsultantCampagne = consultantCampagneDAO.findByCampagneAndConsultant(campagneCourante,consultant);
+		// Si il existe  :
+		if (listConsultantCampagne.size()>0) {
+			return listConsultantCampagne;
+		}else {		
+			throw new ConsultantCampagneException("Il n'y a pas de campagne ouverte associée à ce consultant");
 		}
-			
-			
-		cc.setDate(new Date());
-		//Etat "Renseigné"
-		cc.setEtat(2);
-		return consultantCampagneDAO.save(cc);
 	}
 
-	public ConsultantCampagne modifierConsultantCampagne(ConsultantCampagne cc) throws ConsultantCampagneException, CampagneException {
-		cc.setCampagne(campagneService.getCampagneOuverte());	
-		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));
-		if (consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(cc.getCampagne().getIdCampagne(),cc.getConsultant().getId()).isPresent()) {
-			ConsultantCampagne consCampExistant = consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(cc.getCampagne().getIdCampagne(),cc.getConsultant().getId()).get();
-			cc.setId(consCampExistant.getId());
-			cc.setDate(new Date());
-			//Etat "Modifié"
-			cc.setEtat(0);
-			//TODO : Si tous les updates ne sont pas autorisés, à mettre ici les contrôles
-			//TODO : Vérifier que l'on garde bien l'historique des documents
-
-			return  consultantCampagneDAO.save(cc);
-		}else {
-			throw new ConsultantCampagneException("Modification impossible : La campagne n'existe pas pour ce consultant");
-		}
-		
-	}
 
 	public Map<Integer, Integer> getMapConsultantCampagneCouranteEtat() throws CampagneException {
 		Campagne campagneCourante = campagneService.getCampagneOuverte();
 		List<ConsultantCampagne> list = consultantCampagneDAO.findAllByCampagne(campagneCourante);
+		Map<Consultant, List<ConsultantCampagne>> lignesParConsultant = list.stream().collect(Collectors.groupingBy(ConsultantCampagne::getConsultant));		
 		Map<Integer, Integer> retour = new HashMap<>();
-		for (ConsultantCampagne consultantCampagne : list) {
-			retour.put(consultantCampagne.getConsultant().getId(), consultantCampagne.getEtat());
-			
+		for (Map.Entry<Consultant, List<ConsultantCampagne>> entry : lignesParConsultant.entrySet()){
+			int lastEtat = entry.getValue().stream().max((cc1,cc2) -> cc1.getDate().compareTo(cc2.getDate())).get().getEtat();
+			retour.put(entry.getKey().getId(), lastEtat);
 		}
+				
 		return retour;
+	}
+
+	
+	public ConsultantCampagne creerConsultantCampagne(ConsultantCampagne cc, List<MultipartFile> files) throws CampagneException {
+		cc.setCampagne(campagneService.getCampagneOuverte());
+		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));	
+		if (consultantCampagneDAO.findByCampagneAndConsultant(cc.getCampagne(),cc.getConsultant()).isEmpty()) {
+			cc.setEtat(2);
+		}else {
+			cc.setEtat(0);
+		}
+		//Gestion des documents envoyés
+		for (int i = 0; i < files.size(); i++) {
+			Document doc = documentService.saveFileAndBdd(files.get(i), cc.getConsultant().getNom()+cc.getConsultant().getMatricule(), cc.getCampagne().getIdCampagne());
+			cc.setDocument(doc);				
+		}
+		cc.setDate(new Date());		
+		return consultantCampagneDAO.save(cc);
+	}
+
+	/**
+	 * 
+	 * @param idConsultant
+	 * @param etat
+	 * @return le consultant modifié
+	 * Update l'état de la ligne la plus récente de campagne consultant.
+	 * @throws CampagneException 
+	 * @throws ConsultantCampagneException 
+	 */
+	public ConsultantCampagne updateEtatConsultantCampagne(int idConsultant, int etat) throws ConsultantCampagneException, CampagneException {
+		ConsultantCampagne consultantCampagne= getConsultantCampagneCourante(idConsultant);
+		consultantCampagne.setEtat(etat);
+		return consultantCampagneDAO.save(consultantCampagne);
+		
 	}
 
 	
