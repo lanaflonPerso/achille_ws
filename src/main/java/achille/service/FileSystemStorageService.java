@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import achille.exception.StorageException;
 import achille.exception.StorageFileNotFoundException;
+import achille.model.Document;
 
 @Service
 public class FileSystemStorageService  {
@@ -90,12 +91,29 @@ public class FileSystemStorageService  {
         }
     }
 
+    public Resource load(Document doc) throws MalformedURLException, StorageFileNotFoundException {
+    
+    		Path path = Paths.get(doc.getPath()).resolve(doc.getName());
+    		Resource resource = new UrlResource(path.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            }
+            else {
+                throw new StorageFileNotFoundException(
+                        "Impossible de charger le fichier: " + doc.getName());
+
+            }
+    	}
+    
+	
+
 
     public void deleteAll(String userName, int idCampagne) {
     	Path rootLocation = Paths.get(properties.getLocation(userName, idCampagne));
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
+	
 
 	
 
