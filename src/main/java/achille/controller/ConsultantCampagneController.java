@@ -59,7 +59,12 @@ public class ConsultantCampagneController {
 		return consultantCampagneService.getMapConsultantCampagneCouranteEtat();
 	}
 
-
+    // Serivce qui renvoie la liste des modifications effectuées par un consultant pour la campagne courante
+	@RequestMapping(value ="/consultant-campagne/{idConsultant}/suivi")
+	List<ConsultantCampagne> findConsultantCampagneCouranteSuivi(@PathVariable(value = "idConsultant", required = true) int idConsultant, Authentication authentication) throws ConsultantCampagneException, CampagneException {
+		AuthUtils.consultantAutorise(idConsultant, authentication);
+		return consultantCampagneService.getConsultantCampagneCouranteSuivi(idConsultant);
+	}
 
 
 

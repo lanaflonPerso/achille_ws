@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table (name="consultant_campagne")
@@ -32,14 +31,18 @@ public class ConsultantCampagne {
 	// Information
 	private double nbJourOuvree;
 	private double astreinte;
-	@Transient
-	private Boolean aRapportActivite;
-	@Transient
-	private Boolean aNoteDeFrais;
-	@Transient
-	private Boolean aNoteDeFraisFacture;
+	private String commentaires;
 
 	//Getter et setter
+
+	
+	public String getCommentaires() {
+		return commentaires;
+	}
+	public void setCommentaires(String commentaire) {
+		this.commentaires = commentaire;
+	}
+	
 	public Date getDate() {
 		return date;
 	}
@@ -95,7 +98,7 @@ public class ConsultantCampagne {
 		super();
 	}
 	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Date date, int etat,
-			List<Document> documentsCampagne, double nbJourOuvree, double astreinte) {
+			List<Document> documentsCampagne, double nbJourOuvree, double astreinte, String commentaires) {
 		super();
 		this.id = id;
 		this.consultant = consultant;
@@ -105,6 +108,7 @@ public class ConsultantCampagne {
 		this.documentsCampagne = documentsCampagne;
 		this.nbJourOuvree = nbJourOuvree;
 		this.astreinte = astreinte;
+		this.commentaires=commentaires;
 	}
 	public void setDocument(Document doc) {
 		this.documentsCampagne.add(doc);

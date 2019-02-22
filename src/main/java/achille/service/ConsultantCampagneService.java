@@ -30,14 +30,10 @@ public class ConsultantCampagneService {
 	@Autowired
 	DocumentService documentService;
 
-	
+
 	public ConsultantCampagne  getConsultantCampagneCourante(int idConsultant) throws ConsultantCampagneException, CampagneException {
-		// 0 - On récupère le consultant
-		Consultant consultant= consultantService.getConsultantById(idConsultant);
-		// 1 - On recherche la campagne courante
-		Campagne campagneCourante = campagneService.getCampagneOuverte();
-		// 2 - On cherche en base de donnée le consultantCampagne correspondant
-		List<ConsultantCampagne> listConsultantCampagne = consultantCampagneDAO.findByCampagneAndConsultant(campagneCourante,consultant);
+	
+		List<ConsultantCampagne> listConsultantCampagne = getConsultantCampagneCouranteSuivi(idConsultant);
 		// Si il existe  :
 		if (listConsultantCampagne.size()>0) {
 			//On récupère la version la plus récente de consultant campagne
@@ -73,11 +69,11 @@ public class ConsultantCampagneService {
 			int lastEtat = entry.getValue().stream().max((cc1,cc2) -> cc1.getDate().compareTo(cc2.getDate())).get().getEtat();
 			retour.put(entry.getKey().getId(), lastEtat);
 		}
-				
+
 		return retour;
 	}
 
-	
+
 	public ConsultantCampagne creerConsultantCampagne(ConsultantCampagne cc, List<MultipartFile> files) throws CampagneException {
 		cc.setCampagne(campagneService.getCampagneOuverte());
 		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));	
@@ -108,9 +104,19 @@ public class ConsultantCampagneService {
 		ConsultantCampagne consultantCampagne= getConsultantCampagneCourante(idConsultant);
 		consultantCampagne.setEtat(etat);
 		return consultantCampagneDAO.save(consultantCampagne);
-		
+
 	}
 
-	
-		
+	public List<ConsultantCampagne> getConsultantCampagneCouranteSuivi(int idConsultant) throws CampagneException {
+		// 0 - On récupère le consultant
+		Consultant consultant= consultantService.getConsultantById(idConsultant);
+		// 1 - On recherche la campagne courante
+		Campagne campagneCourante = campagneService.getCampagneOuverte();
+		// 2 - On cherche en base de donnée le consultantCampagne correspondant
+		return consultantCampagneDAO.findByCampagneAndConsultant(campagneCourante,consultant);
+		// Si il existe  :
+	}
+
+
+
 }
