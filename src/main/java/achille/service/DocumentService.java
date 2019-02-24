@@ -1,5 +1,6 @@
 package achille.service;
 
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.Format;
@@ -7,10 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import achille.dao.DocumentDAO;
+import achille.exception.StorageFileNotFoundException;
 import achille.model.Document;
 
 @Service
@@ -41,6 +44,15 @@ public class DocumentService {
 		doc.setPath(rootLocation.toString());
 		fileSystemStorageService.store(file, doc.getName(), rootLocation);
 		return documentDAO.save(doc);
+	}
+	
+
+	public Resource loadDocument(String filename) throws StorageFileNotFoundException, MalformedURLException {
+		// On récupère le document en BDD pour avoir l'username et l'idCampagne correspondant
+		Document doc = documentDAO.findByName(filename);
+		return fileSystemStorageService.load(doc);
+		
+	
 	}
 
 }

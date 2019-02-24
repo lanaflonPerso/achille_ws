@@ -47,11 +47,16 @@ public class ConsultantCampagneController {
 
 
 	// Serivce qui met à jour l'état de la ligne la plus récente de la campagne (ADMIN)
-	@RequestMapping(value ="/consultant-campagne/{idConsultant}/{etat}", method=RequestMethod.PUT)
-	ConsultantCampagne updateEtatConsultantCampagne(@PathVariable(value = "id", required = true) int idConsultant, @PathVariable(value= "etat", required=true) int etat) throws CampagneException, ConsultantCampagneException{
+	@RequestMapping(value ="/consultant-campagne/etat/{idConsultant}/{etat}", method=RequestMethod.PUT)
+	ConsultantCampagne updateEtatConsultantCampagne(@PathVariable(value = "idConsultant", required = true) int idConsultant, @PathVariable(value= "etat", required=true) int etat) throws CampagneException, ConsultantCampagneException{
 		return consultantCampagneService.updateEtatConsultantCampagne(idConsultant,etat);
 	}
 
+	// Serivce qui renvoie l'etat d'un consultant pour la ligne la plus récente de la campagne courante.
+	@RequestMapping(value ="/consultant-campagne/etat/{idConsultant}")
+		Integer getConsultantCampagneEtat(@PathVariable(value = "idConsultant", required = true) int idConsultant) throws CampagneException{
+			return consultantCampagneService.getConsultantCampagneCouranteEtat(idConsultant);
+		}
 
 	// Serivce qui renvoie une map avec l'idconsultant et l'état de la campagne courante
 	@RequestMapping(value ="/consultant-campagne/map-consultant-etat")
@@ -59,7 +64,12 @@ public class ConsultantCampagneController {
 		return consultantCampagneService.getMapConsultantCampagneCouranteEtat();
 	}
 
-
+    // Serivce qui renvoie la liste des modifications effectuées par un consultant pour la campagne courante
+	@RequestMapping(value ="/consultant-campagne/{idConsultant}/suivi")
+	List<ConsultantCampagne> findConsultantCampagneCouranteSuivi(@PathVariable(value = "idConsultant", required = true) int idConsultant, Authentication authentication) throws ConsultantCampagneException, CampagneException {
+		AuthUtils.consultantAutorise(idConsultant, authentication);
+		return consultantCampagneService.getConsultantCampagneCouranteSuivi(idConsultant);
+	}
 
 
 

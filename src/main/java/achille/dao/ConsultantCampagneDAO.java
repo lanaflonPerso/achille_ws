@@ -19,7 +19,7 @@ public interface ConsultantCampagneDAO extends CrudRepository<ConsultantCampagne
 	List<ConsultantCampagne> findByCampagneAndConsultant(Campagne campagneCourante, Consultant consultant);
 
 
-	Optional<ConsultantCampagne> findByCampagneIdCampagneAndConsultantId(int i,
+	List<ConsultantCampagne> findByCampagneIdCampagneAndConsultantId(int i,
 			int j);
 
 

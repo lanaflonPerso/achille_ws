@@ -262,10 +262,4 @@ INSERT INTO `achille_db`.`partenaire` (`value`) VALUES ("YVES SAINT LAURENT BEAU
 
 INSERT INTO `achille_db`.`campagne` (`id_campagne`,`annee_campagne`,`date_ouverture`,`etat`,`mois_campagne`)
 VALUES (201901,2019,"2019-01-01","O",1);
-INSERT INTO `achille_db`.`consultant_campagne`(`id`,`astreinte`,`date`,`etat`,`nb_jour_ouvree`,`campagne_id_campagne`,`consultant_id`)
-VALUES (999989,2,"2019-01-01",1,20,201901,6);
 
-
-delete from `achille_db`.`consultant_campagne_documents_campagne` where consultant;
-delete from `achille_db`.`consultant_campagne` where consultant_id=3;
-delete from `achille_db`.`doc` ;

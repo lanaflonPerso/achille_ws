@@ -8,4 +8,6 @@ import achille.model.Document;
 @Repository
 public interface DocumentDAO extends CrudRepository<Document, Integer> {
 
+	Document findByName(String name);
+
 }
