@@ -47,11 +47,16 @@ public class ConsultantCampagneController {
 
 
 	// Serivce qui met à jour l'état de la ligne la plus récente de la campagne (ADMIN)
-	@RequestMapping(value ="/consultant-campagne/{idConsultant}/{etat}", method=RequestMethod.PUT)
-	ConsultantCampagne updateEtatConsultantCampagne(@PathVariable(value = "id", required = true) int idConsultant, @PathVariable(value= "etat", required=true) int etat) throws CampagneException, ConsultantCampagneException{
+	@RequestMapping(value ="/consultant-campagne/etat/{idConsultant}/{etat}", method=RequestMethod.PUT)
+	ConsultantCampagne updateEtatConsultantCampagne(@PathVariable(value = "idConsultant", required = true) int idConsultant, @PathVariable(value= "etat", required=true) int etat) throws CampagneException, ConsultantCampagneException{
 		return consultantCampagneService.updateEtatConsultantCampagne(idConsultant,etat);
 	}
 
+	// Serivce qui renvoie l'etat d'un consultant pour la ligne la plus récente de la campagne courante.
+	@RequestMapping(value ="/consultant-campagne/etat/{idConsultant}")
+		Integer getConsultantCampagneEtat(@PathVariable(value = "idConsultant", required = true) int idConsultant) throws CampagneException{
+			return consultantCampagneService.getConsultantCampagneCouranteEtat(idConsultant);
+		}
 
 	// Serivce qui renvoie une map avec l'idconsultant et l'état de la campagne courante
 	@RequestMapping(value ="/consultant-campagne/map-consultant-etat")

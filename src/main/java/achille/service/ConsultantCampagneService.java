@@ -117,6 +117,17 @@ public class ConsultantCampagneService {
 		// Si il existe  :
 	}
 
+	public Integer getConsultantCampagneCouranteEtat(int idConsultant) throws CampagneException {
+		Campagne campagneCourante = campagneService.getCampagneOuverte();
+		List<ConsultantCampagne> consultantCampagne = consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(campagneCourante.getIdCampagne(), idConsultant);
+		if (consultantCampagne.isEmpty()) {
+			return 1;
+		}else {
+			return consultantCampagne.stream().max((cc1,cc2) -> cc1.getDate().compareTo(cc2.getDate())).get().getEtat();
+		}
+		
+	}
+
 
 
 }
