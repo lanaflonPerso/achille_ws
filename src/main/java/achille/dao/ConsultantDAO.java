@@ -8,6 +8,8 @@ import achille.model.Consultant;
 @Repository
 public interface ConsultantDAO extends CrudRepository<Consultant, Integer> {
 
+	Consultant findByEmail(String mail);
+
 
 }
 
