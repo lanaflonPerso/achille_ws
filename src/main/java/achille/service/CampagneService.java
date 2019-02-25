@@ -66,5 +66,15 @@ public class CampagneService {
 		return campagnesOuverte.get(0);
 	}
 
+	public Campagne getCampagne(int idCampagne) throws CampagneException {
+		Optional<Campagne> campagne = campagneDAO.findById(idCampagne);
+		if (campagne.get()== null) {
+			throw new CampagneException("La campagne " + idCampagne +" n'existe pas.");
+		}
+		return campagne.get();
+	}
+	
+	
+
 
 }

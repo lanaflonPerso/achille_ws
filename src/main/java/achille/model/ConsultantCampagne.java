@@ -110,6 +110,8 @@ public class ConsultantCampagne {
 		this.astreinte = astreinte;
 		this.commentaires=commentaires;
 	}
+	
+	
 	public void setDocument(Document doc) {
 		this.documentsCampagne.add(doc);
 	

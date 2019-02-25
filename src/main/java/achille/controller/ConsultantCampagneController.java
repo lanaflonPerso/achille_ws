@@ -33,6 +33,16 @@ public class ConsultantCampagneController {
 		return consultantCampagneService.getConsultantCampagneCourante(idConsultant);
 	}
 
+	//Retourne la campagne demandée si elle existe pour un consultant donné
+		@RequestMapping(value ="/consultant-campagne/{idCampagne}/{idConsultant}")
+		List<ConsultantCampagne> findConsultantCampagne(@PathVariable(value = "idConsultant", required = true) int idConsultant,
+												  @PathVariable(value = "idCampagne", required = true) int idCampagne,
+				Authentication authentication) 
+						throws ConsultantCampagneException, CampagneException {
+			AuthUtils.consultantAutorise(idConsultant, authentication);
+			return consultantCampagneService.getConsultantCampagne(idConsultant, idCampagne);
+		}
+
 
 	//Crée un consultant campagne à partir des informations d'un consultant et de la liste des fichiers associés
 	@RequestMapping(value ="/consultant-campagne/update", method=RequestMethod.POST)

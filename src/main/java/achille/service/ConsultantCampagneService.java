@@ -100,22 +100,38 @@ public class ConsultantCampagneService {
 	 * @throws CampagneException 
 	 * @throws ConsultantCampagneException 
 	 */
-	public ConsultantCampagne updateEtatConsultantCampagne(int idConsultant, int etat) throws ConsultantCampagneException, CampagneException {
-		ConsultantCampagne consultantCampagne= getConsultantCampagneCourante(idConsultant);
+	public ConsultantCampagne updateEtatConsultantCampagne(int idConsultant, int etat) throws CampagneException {
+		ConsultantCampagne consultantCampagne = new ConsultantCampagne();
+			try {
+				consultantCampagne = getConsultantCampagneCourante(idConsultant);
+			} catch (ConsultantCampagneException e) {
+				Consultant consultant= consultantService.getConsultantById(idConsultant);
+				Campagne campagneCourante = campagneService.getCampagneOuverte();
+				consultantCampagne.setConsultant(consultant);
+				consultantCampagne.setCampagne(campagneCourante);
+				consultantCampagne.setEtat(etat);
+				consultantCampagne.setDate(new Date());
+				consultantCampagne.setCommentaires("Etat mis à jour par Intervia");
+			}	
+
 		consultantCampagne.setEtat(etat);
 		return consultantCampagneDAO.save(consultantCampagne);
 
 	}
 
 	public List<ConsultantCampagne> getConsultantCampagneCouranteSuivi(int idConsultant) throws CampagneException {
-		// 0 - On récupère le consultant
 		Consultant consultant= consultantService.getConsultantById(idConsultant);
-		// 1 - On recherche la campagne courante
 		Campagne campagneCourante = campagneService.getCampagneOuverte();
-		// 2 - On cherche en base de donnée le consultantCampagne correspondant
 		return consultantCampagneDAO.findByCampagneAndConsultant(campagneCourante,consultant);
-		// Si il existe  :
 	}
+	
+
+	public List<ConsultantCampagne> getConsultantCampagne(int idConsultant, int idCampagne) throws CampagneException {
+		Consultant consultant= consultantService.getConsultantById(idConsultant);
+		Campagne campagne = campagneService.getCampagne(idCampagne);
+		return consultantCampagneDAO.findByCampagneAndConsultant(campagne,consultant);
+	}
+
 
 	public Integer getConsultantCampagneCouranteEtat(int idConsultant) throws CampagneException {
 		Campagne campagneCourante = campagneService.getCampagneOuverte();
