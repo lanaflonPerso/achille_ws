@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +33,27 @@ public class AuthController {
 	@Autowired
 	UserDAO userDAO;
 	
-	@RequestMapping(value ="/reset-ident",  method=RequestMethod.POST)
+	@RequestMapping(value ="/ident/password",  method=RequestMethod.POST)
+	Boolean resetIdent(@RequestBody User u_password, Authentication authentication) throws AddressException, MessagingException, IOException {
+		
+		User u = (User) authentication.getPrincipal();
+		
+		String salt = PasswordUtils.getSalt(30);
+		String passwordEntered = u_password.getPassword();
+		String password = PasswordUtils.generateSecurePassword(passwordEntered, salt);
+
+		u.setPassword(password);
+		u.setSalt(salt);
+		userDAO.save(u);
+		
+		return true;
+		
+	}
+	
+	@RequestMapping(value ="/ident/reset",  method=RequestMethod.POST)
 	Boolean resetIdent(@RequestBody Consultant c_mail) throws AddressException, MessagingException, IOException {
 		
 		Consultant c = consultantDAO.findByEmail(c_mail.getEmail());
-		
-		System.out.println(c_mail.getEmail());
 		
 		String salt = PasswordUtils.getSalt(30);
 		PasswordGenerator pwdGen = new PasswordGenerator(4, 12);
