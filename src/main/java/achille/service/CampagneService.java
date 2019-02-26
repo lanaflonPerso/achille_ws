@@ -68,7 +68,7 @@ public class CampagneService {
 
 	public Campagne getCampagne(int idCampagne) throws CampagneException {
 		Optional<Campagne> campagne = campagneDAO.findById(idCampagne);
-		if (campagne.get()== null) {
+		if (!campagne.isPresent()) {
 			throw new CampagneException("La campagne " + idCampagne +" n'existe pas.");
 		}
 		return campagne.get();
