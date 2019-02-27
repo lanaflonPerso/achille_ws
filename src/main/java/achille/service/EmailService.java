@@ -44,6 +44,7 @@ public class EmailService {
 	}
 	
 	
+	
 	public void sendMail(String subject, String content, String recipient) throws AddressException, MessagingException, IOException {
 		
 	   Message msg = new MimeMessage(session);

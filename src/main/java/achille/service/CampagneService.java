@@ -1,23 +1,30 @@
 package achille.service;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import achille.dao.CampagneDAO;
 import achille.exception.CampagneException;
+import achille.exception.ConsultantException;
 import achille.model.Campagne;
+import achille.model.Consultant;
 
 @Service
 public class CampagneService {
 
 	@Autowired
 	CampagneDAO campagneDAO;
+	@Autowired
+	ConsultantService consultantService;
 
 	public Campagne creerNouvelleCampagne() throws CampagneException {
 		Campagne c = new Campagne();
@@ -73,8 +80,41 @@ public class CampagneService {
 		}
 		return campagne.get();
 	}
-	
+
+	public String sendMail(int idCampagne, String typeMail) throws ConsultantException, CampagneException {
+		// 1 - Liste des ocnsultants concernés
+		Optional<Campagne> campagne = campagneDAO.findById(idCampagne);
+		String retour="";
+		if (campagne.isPresent()) {
+			List<Consultant> consultants = consultantService.getConsultantsMail(typeMail);
+			EmailService em = new EmailService();
+			String subject ="[Intervia] Campagne de paie de "
+					+campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne();
+			
+			try {
+				for (Consultant consultant : consultants) {
+					String content = "Bonjour " + consultant.getPrenom() + " " + consultant.getNom()+" , La campagne de paie " 
+							+ campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne()
+							+ " est ouverte. Vous pouvez dès maintenant renseigner vos informations. "
+							+ "Merci de vous connecter avec les identifiants qui vous ont été envoyés précédemment.";
+					String recipient = consultant.getEmail();
+					em.sendMail(subject, content, recipient);
+				}
+			} catch (MessagingException | IOException e) {
+				retour ="Un problème est survenu pendant l'envoi des emails.";
+			}
+			
+			retour = consultants.size()+" mails envoyés.";
+		}
+		return retour;
+	}
+
+
 	
 
 
 }
+
+
+
+

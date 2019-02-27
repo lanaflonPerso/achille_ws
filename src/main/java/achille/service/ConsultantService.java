@@ -20,6 +20,8 @@ import achille.dao.PartenaireDAO;
 import achille.dao.SocieteDAO;
 import achille.dao.TypeContratDAO;
 import achille.dao.UserDAO;
+import achille.exception.CampagneException;
+import achille.exception.ConsultantException;
 import achille.exception.ConsultantNotFound;
 import achille.model.Adresse;
 import achille.model.Consultant;
@@ -45,6 +47,8 @@ public class ConsultantService {
 	UserDAO userDAO;
 	@Autowired
 	ConsultantService consultantService;
+	@Autowired
+	ConsultantCampagneService consultantCampagneService;
 	@Autowired
 	ConsultantDAO consultantDAO;
 
@@ -92,7 +96,7 @@ public class ConsultantService {
 		la.add(new Authority("CONSULTANT"));
 		User u = new User(c.getId(), c.getNom() + c.getMatricule(), password, salt, la);
 		userDAO.save(u);
-		
+
 		if (c.getSendMail()) {
 			EmailService em = new EmailService();
 			String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "
@@ -109,14 +113,32 @@ public class ConsultantService {
 
 
 	public Consultant getConsultantById(int idConsultant) {
-		 Optional<Consultant> consultant = consultantDAO.findById(idConsultant);
-		 if(consultant.isPresent()) {
-			 return consultant.get();
-		 }else {
-			 throw new ConsultantNotFound(idConsultant);
-		 }
-		
-	
+		Optional<Consultant> consultant = consultantDAO.findById(idConsultant);
+		if(consultant.isPresent()) {
+			return consultant.get();
+		}else {
+			throw new ConsultantNotFound(idConsultant);
+		}
+
+
+	}
+
+	public List<Consultant> getConsultantsMail(String typeMail) throws ConsultantException, CampagneException {
+		List<Consultant> consultants = consultantDAO.findBySendMail(true);
+		if (typeMail.equals("ouverture")) {
+			return consultantDAO.findBySendMail(true);
+		} else if (typeMail.equals("relance")) {
+			List<Consultant> retour  = new ArrayList<>();
+			for (Consultant consultant : consultants) {
+				if (consultantCampagneService.getConsultantCampagneCouranteEtat(consultant.getId())==1){
+					retour.add(consultant);
+				};	
+			}
+			return retour;
+		}else  {
+			throw new ConsultantException ("Le type de mail" + typeMail + "n'existe pas.");
+		}
+
 	}
 
 

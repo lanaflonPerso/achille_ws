@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import achille.dao.CampagneDAO;
 import achille.exception.CampagneException;
+import achille.exception.ConsultantException;
 import achille.model.Campagne;
 import achille.service.CampagneService;
 
@@ -74,6 +75,14 @@ public class CampagneController {
 	@RequestMapping(value ="/campagne/nouvelle",  method=RequestMethod.POST)
 	Campagne create( ) throws IOException, CampagneException {
 		return campagneService.creerNouvelleCampagne();
+	}
+
+	//Envoie un mail d'ouverture de camapagne à tous les consultants avec la propriété sendMail à true
+	@RequestMapping(value ="/campagne/mail/{typeMail}/{idCampagne}")
+	String sendMailOuverture(@PathVariable(value = "idCampagne", required = true) int idCampagne,
+			@PathVariable(value = "typeMail", required = true)  String typeMail
+			) throws IOException, CampagneException, ConsultantException {
+		return campagneService.sendMail(idCampagne, typeMail);
 	}
 
 
