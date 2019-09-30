@@ -9,9 +9,9 @@
 
 	<files>
 		<file>
-			<source>target/ROOT.war</source>
+			<source>target/ROOT.jar</source>
 			<!-- renommage du ROOT.war en FORMATION.war -->
-			<destName>api_payes_intervia.war</destName>
+			<destName>payes_intervia.jar</destName>
 		</file>
 		<file>
 			<!-- filtered = true permet de remplacer des champs variables de l'intérieur d'un fichier par leur valeur,
