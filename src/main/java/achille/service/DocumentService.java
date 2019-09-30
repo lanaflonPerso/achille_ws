@@ -33,7 +33,7 @@ public class DocumentService {
 		String name=file.getOriginalFilename();
 		String typeDoc = name.substring(0, name.indexOf("_"));
 		doc.setTypeDoc(typeDoc);
-		String originalName = name.substring(name.indexOf("_")+1,name.length()-1);
+		String originalName = name.substring(name.indexOf("_")+1,name.length());
 		doc.setOriginalName(originalName);
 		StringBuilder nomDoc =  new StringBuilder() ;
 		Format formatter = new SimpleDateFormat("yyyyMMdd-HHmmss");
