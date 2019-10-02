@@ -11,6 +11,7 @@ import javax.mail.internet.AddressException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,19 +35,26 @@ public class AuthController {
 	UserDAO userDAO;
 	
 	@RequestMapping(value ="/ident/password",  method=RequestMethod.POST)
-	Boolean resetIdent(@RequestBody User u_password, Authentication authentication) throws AddressException, MessagingException, IOException {
+	Boolean resetIdent(@RequestBody List<String> pwds,
+		  	Authentication authentication)  throws AddressException, MessagingException, IOException {
+		
+		String oldPwd = pwds.get(0);
+		String newPWd = pwds.get(1);
 		
 		User u = (User) authentication.getPrincipal();
 		
-		String salt = PasswordUtils.getSalt(30);
-		String passwordEntered = u_password.getPassword();
-		String password = PasswordUtils.generateSecurePassword(passwordEntered, salt);
-
-		u.setPassword(password);
-		u.setSalt(salt);
-		userDAO.save(u);
+		String oldSecuredPwd = PasswordUtils.generateSecurePassword(oldPwd, u.getSalt());
 		
-		return true;
+		if (oldSecuredPwd.equals(u.getPassword())) {
+			String salt = PasswordUtils.getSalt(30);
+			String password = PasswordUtils.generateSecurePassword(newPWd, salt);
+			u.setPassword(password);
+			u.setSalt(salt);
+			userDAO.save(u);
+			return true;
+		} else {
+			return false;
+		}
 		
 	}
 	

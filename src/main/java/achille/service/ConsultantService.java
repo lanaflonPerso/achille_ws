@@ -60,7 +60,6 @@ public class ConsultantService {
 		}
 		return false;
 	}
-
 	public boolean createConsultant(Consultant c) throws AddressException, MessagingException, IOException {
 
 		if (consultantService.consultantExisted(c.getNom(), c.getMatricule()))
@@ -110,8 +109,6 @@ public class ConsultantService {
 		return true;
 
 	}
-
-
 	public Consultant getConsultantById(int idConsultant) {
 		Optional<Consultant> consultant = consultantDAO.findById(idConsultant);
 		if(consultant.isPresent()) {
@@ -122,7 +119,6 @@ public class ConsultantService {
 
 
 	}
-
 	public List<Consultant> getConsultantsMail(String typeMail) throws ConsultantException, CampagneException {
 		List<Consultant> consultants = consultantDAO.findBySendMail(true);
 		if (typeMail.equals("ouverture")) {
@@ -140,6 +136,5 @@ public class ConsultantService {
 		}
 
 	}
-
 
 }
