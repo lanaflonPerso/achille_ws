@@ -1,6 +1,10 @@
 package achille.service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +15,7 @@ import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import achille.auth.Authority;
 import achille.dao.AdresseDAO;
@@ -29,6 +34,8 @@ import achille.model.Fiche;
 import achille.model.User;
 import achille.password.PasswordGenerator;
 import achille.password.PasswordUtils;
+import achille.utils.Convert;
+import achille.wrapper.ConsultantWrapper;
 
 @Service
 public class ConsultantService {
@@ -52,7 +59,7 @@ public class ConsultantService {
 	@Autowired
 	ConsultantDAO consultantDAO;
 
-	public Boolean consultantExisted(String nom, String matricule) {
+	public boolean consultantExisted(String nom, String matricule) {
 		List<Consultant> l_c = (List<Consultant>) consultantDAO.findAll();
 		for (Consultant consultant : l_c) {
 			if (consultant.getNom().equals(nom) && consultant.getMatricule().equals(matricule))
@@ -78,9 +85,12 @@ public class ConsultantService {
 			c.setFiche(ficheDAO.save(f));
 		}
 
-		c.setSociete(societeDAO.save(c.getSociete()));
-		c.setTypeContrat(typeContratDAO.save(c.getTypeContrat()));
-		c.setPartenaire(partenaireDAO.save(c.getPartenaire()));
+		if (c.getSociete() != null)
+			c.setSociete(societeDAO.save(c.getSociete()));
+		if (c.getTypeContrat() != null)
+			c.setTypeContrat(typeContratDAO.save(c.getTypeContrat()));
+		if (c.getPartenaire() != null)
+			c.setPartenaire(partenaireDAO.save(c.getPartenaire()));
 
 		c.setInsertionDate(insertDate);
 
@@ -119,22 +129,72 @@ public class ConsultantService {
 
 
 	}
-	public List<Consultant> getConsultantsMail(String typeMail) throws ConsultantException, CampagneException {
+	public List<Consultant> getConsultantsMail(String typeMail)
+			throws ConsultantException, CampagneException {
+		
 		List<Consultant> consultants = consultantDAO.findBySendMail(true);
+		List<Consultant> retour  = new ArrayList<>();
+		
 		if (typeMail.equals("ouverture")) {
-			return consultantDAO.findBySendMail(true);
-		} else if (typeMail.equals("relance")) {
-			List<Consultant> retour  = new ArrayList<>();
+			
 			for (Consultant consultant : consultants) {
-				if (consultantCampagneService.getConsultantCampagneCouranteEtat(consultant.getId())==1){
+				if ( consultant.getCampagnePaie() ) {
+					retour.add(consultant);
+				};
+			}
+			
+			return retour;
+			
+		} else if (typeMail.equals("relance")) {
+			
+			for (Consultant consultant : consultants) {
+				if ( consultantCampagneService.getConsultantCampagneCouranteEtat(consultant.getId()) == 1 &&
+						consultant.getCampagnePaie() ){
 					retour.add(consultant);
 				};	
 			}
+			
 			return retour;
-		}else  {
+			
+		} else {
+			
 			throw new ConsultantException ("Le type de mail" + typeMail + "n'existe pas.");
+			
 		}
 
 	}
+	public boolean updateConsultant(MultipartFile multipartfile)
+			throws IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, ParseException, AddressException, MessagingException {
 
+		ConsultantWrapper cWrapper = new ConsultantWrapper();
+
+		List<Consultant> consultantExistant = (List<Consultant>) consultantDAO.findAll();
+		for (Consultant c : consultantExistant) {
+			c.setCampagnePaie(false);
+			consultantDAO.save(c);
+		}
+
+		File file = Convert.multipartFile2file(multipartfile);
+
+		BufferedReader csvReader = new BufferedReader(new FileReader(file));
+
+		String[] header = csvReader.readLine().split(";"); header[0] = "SOCIETE";
+		String row;
+
+		while ((row = csvReader.readLine()) != null) {
+			
+			String[] data = row.split(";");
+			Consultant c = cWrapper.createConsultant(header, data);
+			
+			if (this.consultantExisted(c.getNom(), c.getMatricule()) && c.getCampagnePaie()) {
+				consultantDAO.save(c);
+			} else {
+				this.createConsultant(c);
+			}
+		}
+		csvReader.close();
+
+		return true;
+
+	}
 }

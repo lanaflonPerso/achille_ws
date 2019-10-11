@@ -17,19 +17,19 @@ import achille.model.User;
 @CrossOrigin(origins = "*")
 @RestController
 public class UserController {
-	
+
 	@Autowired
 	UserDAO userDAO;
-	
+
 	//Retourne l'user authentifié
-			@RequestMapping(value ="/user/auth/{username}",  method=RequestMethod.GET)
-			// TODO : controler que l'user nam correspond au token d'authentification
-			User  consultantAuth(@PathVariable(value="username", required=true) String username) {
-				if(!userDAO.existsByUsername(username)) {
-					throw new ConsultantNotFound(username);
-				}
-				 return userDAO.findByUsername(username);
-			}
+	@RequestMapping(value ="/user/auth/{username}",  method=RequestMethod.GET)
+	// TODO : controler que l'user nam correspond au token d'authentification
+	User  consultantAuth(@PathVariable(value="username", required=true) String username) {
+		if(!userDAO.existsByUsername(username)) {
+			throw new ConsultantNotFound(username);
+		}
+		return userDAO.findByUsername(username);
+	}
 
 
 

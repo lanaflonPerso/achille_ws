@@ -1,6 +1,10 @@
 package achille.model;
 
+import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,9 +57,32 @@ public class Fiche {
 		
 	}
 	
-	public enum Sexe { Homme, Femme; }
+	public void setFields(String fieldsName, String fieldsValue, String toCast, Map<String,String> correctNationalite)
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, ParseException {
+
+		Field field = Fiche.class.getDeclaredField(fieldsName);
+
+		switch (toCast) {
+
+		case "string": field.set(this, fieldsValue); break;
+		case "double": field.set(this, Double.parseDouble(fieldsValue)); break;
+		case "int": field.set(this, Integer.parseInt(fieldsValue)); break;
+		case "date": field.set(this, new SimpleDateFormat("dd/MM/yyyy").parse(fieldsValue)); break;
+		case "boolean": field.set(this, fieldsValue.equalsIgnoreCase("vrai")); break;
+		case "nationalite": 
+			String enumNationalite = correctNationalite.get(fieldsValue);
+			field.set(this, Nationalite.valueOf(enumNationalite));
+			break;
+		case "sexe": field.set(this, Sexe.valueOf(fieldsValue)); break;
+
+		}
+
+	}
+	
+	
+	public enum Sexe { Homme, Femme, Unknown;}
 	public enum StatutFamilal { Marie, PACS, Celibataire; }
-	public enum Nationalite { FR, EEE, HORS_EEE; }
+	public enum Nationalite { FR, EEE, HORS_EEE, Unknown;}
 	
 	public String getNomJeuneFille() {
 		return nomJeuneFille;

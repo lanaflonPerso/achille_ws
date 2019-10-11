@@ -1,6 +1,10 @@
 package achille.controller;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +32,7 @@ import achille.dao.UserDAO;
 import achille.exception.ConsultantNotFound;
 import achille.model.Consultant;
 import achille.service.ConsultantService;
+import achille.wrapper.ConsultantWrapper;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -84,8 +89,6 @@ public class ConsultantController {
 		return consultantDAO.findById(id);
 	}
 
-
-
 	// Update un consultant : ADMIN ou CONSULTANT
 	@RequestMapping(value = "/consultant", method = RequestMethod.PUT)
 	Consultant update(@RequestBody Consultant c, Authentication authentication) {
@@ -97,7 +100,7 @@ public class ConsultantController {
 		return consultantDAO.save(c);
 
 	}
-
+	
 	
 
 

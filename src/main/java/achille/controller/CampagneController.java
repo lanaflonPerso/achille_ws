@@ -1,20 +1,32 @@
 package achille.controller;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import achille.dao.CampagneDAO;
 import achille.exception.CampagneException;
 import achille.exception.ConsultantException;
 import achille.model.Campagne;
+import achille.model.Consultant;
 import achille.service.CampagneService;
+import achille.wrapper.ConsultantWrapper;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -77,15 +89,22 @@ public class CampagneController {
 		return campagneService.creerNouvelleCampagne();
 	}
 
-	//Envoie un mail d'ouverture de camapagne à tous les consultants avec la propriété sendMail à true
+	//Envoie un mail d'ouverture de campagne à tous les consultants avec la propriété sendMail à true
 	@RequestMapping(value ="/campagne/mail/{typeMail}/{idCampagne}")
 	String sendMailOuverture(@PathVariable(value = "idCampagne", required = true) int idCampagne,
 			@PathVariable(value = "typeMail", required = true)  String typeMail
 			) throws IOException, CampagneException, ConsultantException {
 		return campagneService.sendMail(idCampagne, typeMail);
 	}
-
-
+	
+	@RequestMapping(value ="/campagne/update-liste-consultant", method=RequestMethod.POST)
+	Boolean createFromFiles(@RequestPart("files") MultipartFile files,
+			Authentication authentication) 
+			throws IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, ParseException, AddressException, CampagneException, MessagingException {
+		
+		return campagneService.genererListeConsultantPourCampagneOuverte(files);
+		
+	}
 
 
 

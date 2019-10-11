@@ -1,5 +1,8 @@
 package achille.model;
 
+import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -10,10 +13,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import achille.utils.Parse;
+
 @Entity
 @Table (name="Consultant")
 public class Consultant {
-	
+
 	@Id
 	@GeneratedValue
 	private int id;
@@ -25,27 +30,48 @@ public class Consultant {
 	private String email;
 	private Date dateEntree;
 	private Date dateFinContratCom;
-    private Date dateSortiePaie;
-    @ManyToOne(targetEntity=Partenaire.class, fetch=FetchType.EAGER)
-    private Partenaire partenaire;
-    private String contact;
-    private double TJM;
-    private double forfaitFrais;
-    private Boolean DUE;
-    @ManyToOne(targetEntity=TypeContrat.class, fetch=FetchType.EAGER)
-    private TypeContrat typeContrat;
-    private Boolean entreePaie;
-    private Boolean stcPaie;
-    private String observation;
-    private double plvtIntervia;
-    private String lieuActiviteInsee;
-    private Boolean davidsonCommission;
-    private Boolean campagnePaie;
-    @OneToOne
-    private Fiche fiche;
+	private Date dateSortiePaie;
+	@ManyToOne(targetEntity=Partenaire.class, fetch=FetchType.EAGER)
+	private Partenaire partenaire;
+	private String contact;
+	private double TJM;
+	private double forfaitFrais;
+	private Boolean DUE;
+	@ManyToOne(targetEntity=TypeContrat.class, fetch=FetchType.EAGER)
+	private TypeContrat typeContrat;
+	private Boolean entreePaie;
+	private Boolean stcPaie;
+	private String observation;
+	private double plvtIntervia;
+	private String lieuActiviteInsee;
+	private Boolean davidsonCommission;
+	private Boolean campagnePaie;
+	@OneToOne
+	private Fiche fiche;
 	private Date insertionDate;
 	private Boolean sendMail;
-	
+
+	public void setFields(String fieldsName, String fieldsValue, String toCast)
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, ParseException {
+
+		Field field = Consultant.class.getDeclaredField(fieldsName);
+
+		switch (toCast) {
+
+		case "string": field.set(this, fieldsValue); break;
+		case "double": field.set(this, Parse.myDouble(fieldsValue)); break;
+		case "int": field.set(this, Integer.parseInt(fieldsValue)); break;
+		case "date": field.set(this, new SimpleDateFormat("dd/MM/yyyy").parse(fieldsValue)); break;
+		case "boolean": field.set(this, fieldsValue.equalsIgnoreCase("vrai")); break;
+		case "partenaire": field.set(this, new Partenaire(fieldsValue)); break;
+		case "societe": field.set(this, new Societe(fieldsValue)); break;
+		case "typecontrat": field.set(this, new TypeContrat(fieldsValue)); break;
+
+		}
+
+
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -196,6 +222,5 @@ public class Consultant {
 	public void setSendMail(Boolean sendMail) {
 		this.sendMail = sendMail;
 	}
-	
 
 }
