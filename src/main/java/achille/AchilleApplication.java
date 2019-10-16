@@ -19,47 +19,49 @@ import achille.password.PasswordUtils;
 
 @SpringBootApplication
 public class AchilleApplication {
-	
-	
+
+
 	private static ReadAppProp readAppProp;
 	private static UserDAO userDAO;
-	
-    @Autowired
-    public void setReadAppProp(ReadAppProp readAppProp){
-    	AchilleApplication.readAppProp = readAppProp;
-    }
-    @Autowired
-    public void setUserDAO(UserDAO userDAO){
-    	AchilleApplication.userDAO = userDAO;
-    }
-    
+
+	@Autowired
+	public void setReadAppProp(ReadAppProp readAppProp){
+		AchilleApplication.readAppProp = readAppProp;
+	}
+	@Autowired
+	public void setUserDAO(UserDAO userDAO){
+		AchilleApplication.userDAO = userDAO;
+	}
+
 	public static void main(String[] args)
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, SQLException {
 
 		SpringApplication.run(AchilleApplication.class, args);
-		
+
 		if (readAppProp.stateDb.equals("create")) {
 			AchilleApplication.initDataBase();
 		}
 	}
-	
+
 	private static void initDataBase() throws SQLException {
-		
+
 		String url = readAppProp.dbUrl;
 		String databaseName = readAppProp.nameDb;
 		String user = readAppProp.usrName;
 		String password = readAppProp.usrPswd;
 		String passwordGenerated = readAppProp.siteAdminPwd;
 		String userName = readAppProp.siteAdminUserName;
-		
+
 		int userid = 99999;
 		String authority = "ADMIN";
 		String salt = PasswordUtils.getSalt(20);
 		String securedPassword = PasswordUtils.generateSecurePassword(passwordGenerated, salt);
-		
+
 		Connection conn = DriverManager.getConnection(url, user, password);
-		
+
 		Statement st = conn.createStatement();
+			
+		//System.out.println("INSERT INTO " + databaseName + ".authority (authority) VALUES ('ADMIN')");
 		
 		st.executeUpdate("INSERT INTO " + databaseName + ".authority (authority) VALUES ('ADMIN')");
 		st.executeUpdate("INSERT INTO " + databaseName + ".authority (authority) VALUES ('CONSULTANT')");
@@ -320,37 +322,33 @@ public class AchilleApplication {
 		st.executeUpdate("INSERT INTO " + databaseName + ".partenaire (value) VALUES ('YOMEVA')");
 		st.executeUpdate("INSERT INTO " + databaseName + ".partenaire (value) VALUES ('YOSEMITE INVEST')");
 		st.executeUpdate("INSERT INTO " + databaseName + ".partenaire (value) VALUES ('YVES SAINT LAURENT BEAUTE')");
-		
+
 		st.executeUpdate("INSERT INTO " + databaseName + ".campagne "
 				+ "(id_campagne, annee_campagne, date_ouverture, etat, mois_campagne) "
 				+ "VALUES (201901, 2019, '2019-01-01', 'O', 1)");
 
-		 /*st.executeUpdate("INSERT INTO " + databaseName + ".user "
-		 		+ "(user_id, username, password, salt) "
-				+ "VALUES (" + Integer.toString(userid) + ", '" + userName + "', '" + securedPassword + "', '" + salt + "')");*/
-
-		 st.executeUpdate("INSERT INTO " + databaseName + ".user "
-		 		+ "(user_id, username, password) "
-				+ "VALUES (" + Integer.toString(userid) + ", '" + userName + "', '" + passwordGenerated + "')");
+		st.executeUpdate("INSERT INTO " + databaseName + ".user "
+				+ "(user_id, username, password, salt) "
+				+ "VALUES (" + Integer.toString(userid) + ", '" + userName + "', '" + securedPassword + "', '" + salt + "')");
 		
 		st.executeUpdate("INSERT INTO " + databaseName + ".user_authority "
 				+ "(user_user_id, authority_authority) "
 				+ "VALUES ('" + Integer.toString(userid) + "', '" + authority + "')");
-		
+
 		conn.close();
-	
+
 		/*List<Authority> la = new ArrayList<Authority>();
 		la.add(new Authority(authority));
 		User u = new User(userid, userName, securedPassword, salt, la);
 		userDAO.save(u);*/
-		
+
 	}
 }
 
 @Component
 class ReadAppProp
 {
-	
+
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	public String stateDb;
 	@Value("${databaseName}")

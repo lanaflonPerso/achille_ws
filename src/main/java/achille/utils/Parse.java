@@ -13,7 +13,7 @@ public class Parse {
 			s = s.replace("%", "");
 			d = Double.parseDouble(s)/100;
 		} else {
-			d =  Double.parseDouble(s);
+			d = Double.parseDouble(s);
 		}
 
 		return d;

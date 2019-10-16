@@ -106,6 +106,11 @@ public class ConsultantService {
 		User u = new User(c.getId(), c.getNom() + c.getMatricule(), password, salt, la);
 		userDAO.save(u);
 
+		if (c.getSendMail() == null) {
+			c.setSendMail(false);
+			c = consultantDAO.save(c);
+		}
+		
 		if (c.getSendMail()) {
 			EmailService em = new EmailService();
 			String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "

@@ -9,6 +9,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,7 +54,7 @@ public class AuthController {
 			userDAO.save(u);
 			return true;
 		} else {
-			return false;
+			throw new BadCredentialsException("L'ancien mot de passe renseigné n'est pas bon");
 		}
 		
 	}
@@ -62,18 +63,19 @@ public class AuthController {
 	Boolean resetIdent(@RequestBody Consultant c_mail) throws AddressException, MessagingException, IOException {
 		
 		Consultant c = consultantDAO.findByEmail(c_mail.getEmail());
+		Optional<User> u = userDAO.findById(c.getId());
+		
+		if(!u.isPresent())
+			throw new BadCredentialsException("Email inconnu");
 		
 		String salt = PasswordUtils.getSalt(30);
 		PasswordGenerator pwdGen = new PasswordGenerator(4, 12);
 		String passwordGenerated = pwdGen.generatePassword().toString();
 		String password = PasswordUtils.generateSecurePassword(passwordGenerated, salt);
 
-		Optional<User> u = userDAO.findById(c.getId());
-		if(u.isPresent()) {
-			u.get().setPassword(password);
-			u.get().setSalt(salt);
-			userDAO.save(u.get());
-		}
+		u.get().setPassword(password);
+		u.get().setSalt(salt);
+		userDAO.save(u.get());
 		
 		if (c.getSendMail()) {
 			EmailService em = new EmailService();

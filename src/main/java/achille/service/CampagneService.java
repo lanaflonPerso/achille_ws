@@ -124,7 +124,7 @@ public class CampagneService {
 			throws CampagneException, AddressException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, IOException, ParseException, MessagingException {
 		
 		int campagneId = this.getCampagneOuverte().getIdCampagne();
-		documentService.saveFileAndBdd(files, "liste consultants", campagneId);
+		documentService.saveFileAndBdd(files, "liste-consultants", campagneId);
 		
 		return consultantService.updateConsultant(files);
 		
