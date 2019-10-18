@@ -26,3 +26,4 @@
 
 src/main/resources/prod.properties
 *.csv
+*.xls

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 import achille.utils.Parse;
 
@@ -46,7 +48,7 @@ public class Consultant {
 	private String lieuActiviteInsee;
 	private Boolean davidsonCommission;
 	private Boolean campagnePaie;
-	@OneToOne
+	@OneToOne(cascade={CascadeType.ALL})
 	private Fiche fiche;
 	private Date insertionDate;
 	private Boolean sendMail;
