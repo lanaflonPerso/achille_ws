@@ -1,10 +1,6 @@
 package achille.service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
@@ -12,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +18,6 @@ import achille.exception.CampagneException;
 import achille.exception.ConsultantException;
 import achille.model.Campagne;
 import achille.model.Consultant;
-import achille.model.Document;
-import achille.wrapper.ConsultantWrapper;
 
 @Service
 public class CampagneService {
@@ -122,14 +115,10 @@ public class CampagneService {
 		return retour;
 	}
 
-	public boolean genererListeConsultantPourCampagneOuverte(MultipartFile files)
-			throws CampagneException, AddressException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, IOException, ParseException, MessagingException {
-		
+	public int genererListeConsultantPourCampagneOuverte(MultipartFile files) throws Exception {
 		int campagneId = this.getCampagneOuverte().getIdCampagne();
-		documentService.saveFileAndBdd(files, "liste-consultants", campagneId);
-		
-		return consultantService.updateConsultant(files);
-		
+		documentService.saveFileAndBdd(files, "liste-consultants", campagneId);		
+		return consultantService.updateConsultant(files);		
 		
 	}
 	

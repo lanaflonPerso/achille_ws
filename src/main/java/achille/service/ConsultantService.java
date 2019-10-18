@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +35,7 @@ import achille.password.PasswordGenerator;
 import achille.password.PasswordUtils;
 import achille.utils.Convert;
 import achille.wrapper.ConsultantWrapper;
+import antlr.StringUtils;
 
 @Service
 public class ConsultantService {
@@ -59,18 +59,19 @@ public class ConsultantService {
 	@Autowired
 	ConsultantDAO consultantDAO;
 
-	public boolean consultantExisted(String nom, String matricule) {
+	public int consultantExisted(String nom, String matricule) {
 		List<Consultant> l_c = (List<Consultant>) consultantDAO.findAll();
 		for (Consultant consultant : l_c) {
 			if (consultant.getNom().equals(nom) && consultant.getMatricule().equals(matricule))
-				return true;
+				return consultant.getId();
 		}
-		return false;
+		return 0;
 	}
 	public boolean createConsultant(Consultant c) throws AddressException, MessagingException, IOException {
 
-		if (consultantService.consultantExisted(c.getNom(), c.getMatricule()))
+		if (consultantService.consultantExisted(c.getNom(), c.getMatricule()) != 0) {
 			return false;
+		}
 
 		Date insertDate = new Date();
 
@@ -110,7 +111,7 @@ public class ConsultantService {
 			c.setSendMail(false);
 			c = consultantDAO.save(c);
 		}
-		
+
 		if (c.getSendMail()) {
 			EmailService em = new EmailService();
 			String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "
@@ -136,70 +137,79 @@ public class ConsultantService {
 	}
 	public List<Consultant> getConsultantsMail(String typeMail)
 			throws ConsultantException, CampagneException {
-		
 		List<Consultant> consultants = consultantDAO.findBySendMail(true);
 		List<Consultant> retour = new ArrayList<>();
-		
 		if (typeMail.equals("ouverture")) {
-			
 			for (Consultant consultant : consultants) {
 				if ( consultant.getCampagnePaie() ) {
 					retour.add(consultant);
 				};
 			}
-			
 			return retour;
-			
 		} else if (typeMail.equals("relance")) {
-			
 			for (Consultant consultant : consultants) {
 				if ( consultantCampagneService.getConsultantCampagneCouranteEtat(consultant.getId()) == 1 &&
 						consultant.getCampagnePaie() ){
 					retour.add(consultant);
 				};	
 			}
-			
 			return retour;
-			
 		} else {
-			
 			throw new ConsultantException ("Le type de mail" + typeMail + "n'existe pas.");
-			
 		}
 
 	}
-	public boolean updateConsultant(MultipartFile multipartfile)
-			throws IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, ParseException, AddressException, MessagingException {
-
+	
+	@SuppressWarnings("resource")
+	public int updateConsultant(MultipartFile multipartfile) throws Exception {
 		ConsultantWrapper cWrapper = new ConsultantWrapper();
 
-		List<Consultant> consultantExistant = (List<Consultant>) consultantDAO.findAll();
-		for (Consultant c : consultantExistant) {
-			c.setCampagnePaie(false);
-			consultantDAO.save(c);
-		}
-
 		File file = Convert.multipartFile2file(multipartfile);
-
 		BufferedReader csvReader = new BufferedReader(new FileReader(file));
-
-		String[] header = csvReader.readLine().split(";"); header[0] = "SOCIETE";
-		String row;
-
-		while ((row = csvReader.readLine()) != null) {
-			
-			String[] data = row.split(";");
-			Consultant c = cWrapper.createConsultant(header, data);
-			
-			if (this.consultantExisted(c.getNom(), c.getMatricule()) && c.getCampagnePaie()) {
-				consultantDAO.save(c);
-			} else {
-				this.createConsultant(c);
-			}
+		String UTF8_BOM="\uFEFF";
+		String readLine = csvReader.readLine();
+		if (readLine.startsWith(UTF8_BOM)) {
+			readLine=readLine.substring(1);
 		}
-		csvReader.close();
+		String[] header = readLine.split(";");
 
-		return true;
+		if (cWrapper.controleHeader(header)) {
+
+			/*On passe tous les consultants en base a inactif*/
+			List<Consultant> consultantExistant = (List<Consultant>) consultantDAO.findAll();
+			for (Consultant c : consultantExistant) {
+				c.setCampagnePaie(false);
+				consultantDAO.save(c);
+			}
+
+			/*On crée ou update en fonction du contenu du fichier*/
+			String row;
+			int nbConsultant=0;
+
+			while ((row = csvReader.readLine()) != null) {
+
+				String[] data = row.split(";");
+				Consultant c = cWrapper.createConsultant(header, data);
+				int idC = this.consultantExisted(c.getNom(), c.getMatricule());
+				if (idC != 0) {
+					if (c.getCampagnePaie()) {
+						c.setId(idC);
+						consultantDAO.save(c);
+						nbConsultant=nbConsultant+1;
+					}
+				} else {
+					this.createConsultant(c);
+
+					nbConsultant=nbConsultant+1;
+				}
+			}
+			csvReader.close();
+			return nbConsultant;
+		} else {
+			csvReader.close();
+			throw new ConsultantException("Format de fichier incorrect. Il faut importer un .csv avec au minimum les colonnes MATRI, SOCIETE, NOM, PRENOM et CAMPAGNE-PAIE");
+		}
+
 
 	}
 }

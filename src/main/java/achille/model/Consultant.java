@@ -60,14 +60,30 @@ public class Consultant {
 
 		switch (toCast) {
 
-		case "string": field.set(this, fieldsValue); break;
-		case "double": field.set(this, Parse.myDouble(fieldsValue)); break;
-		case "int": field.set(this, Integer.parseInt(fieldsValue)); break;
-		case "date": field.set(this, new SimpleDateFormat("dd/MM/yyyy").parse(fieldsValue)); break;
-		case "boolean": field.set(this, fieldsValue.equalsIgnoreCase("vrai")); break;
-		case "partenaire": field.set(this, new Partenaire(fieldsValue)); break;
-		case "societe": field.set(this, new Societe(fieldsValue)); break;
-		case "typecontrat": field.set(this, new TypeContrat(fieldsValue)); break;
+		case "string": 
+			field.set(this, fieldsValue); 
+			break;
+		case "double": 
+			field.set(this, Parse.myDouble(fieldsValue)); 
+			break;
+		case "int": 
+			field.set(this, Integer.parseInt(fieldsValue)); 
+			break;
+		case "date": 
+			field.set(this, new SimpleDateFormat("dd/MM/yyyy").parse(fieldsValue)); 
+			break;
+		case "boolean":
+			field.set(this, fieldsValue.equalsIgnoreCase("vrai")); 
+			break;
+		case "partenaire": 
+			field.set(this, new Partenaire(fieldsValue)); 
+			break;
+		case "societe": 
+			field.set(this, new Societe(fieldsValue)); 
+			break;
+		case "typecontrat": 
+			field.set(this, new TypeContrat(fieldsValue)); 
+			break;
 
 		}
 

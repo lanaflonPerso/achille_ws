@@ -98,10 +98,9 @@ public class CampagneController {
 	}
 	
 	@RequestMapping(value ="/campagne/update-liste-consultant", method=RequestMethod.POST)
-	Boolean createFromFiles(@RequestPart("files") MultipartFile files,
+	int createFromFiles(@RequestPart("files") MultipartFile files,
 			Authentication authentication) 
-			throws IOException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, ParseException, AddressException, CampagneException, MessagingException {
-		
+			throws Exception {		
 		return campagneService.genererListeConsultantPourCampagneOuverte(files);
 		
 	}
