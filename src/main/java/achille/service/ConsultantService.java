@@ -115,7 +115,7 @@ public class ConsultantService {
 			EmailService em = new EmailService();
 			String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "
 					+ c.getMatricule() + System.getProperty("line.separator") + "mot de passe : " + passwordGenerated;
-			String subject = "Création de compte";
+			String subject = "[" + c.getSociete() + "- Application Payes] " + "Création de compte";
 			String recipient = c.getEmail();
 
 			em.sendMail(subject, content, recipient);
@@ -138,7 +138,7 @@ public class ConsultantService {
 			throws ConsultantException, CampagneException {
 		
 		List<Consultant> consultants = consultantDAO.findBySendMail(true);
-		List<Consultant> retour  = new ArrayList<>();
+		List<Consultant> retour = new ArrayList<>();
 		
 		if (typeMail.equals("ouverture")) {
 			

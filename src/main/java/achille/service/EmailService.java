@@ -16,7 +16,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import achille.AchilleApplication;
+import achille.utils.ReadAppProp;
 
 @Service
 public class EmailService {
@@ -24,6 +28,11 @@ public class EmailService {
 	private Properties props;
 	private Session session;
 	private String messageAuto;
+	private static ReadAppProp readAppProp;
+	@Autowired
+	public void setReadAppProp(ReadAppProp readAppProp){
+		EmailService.readAppProp = readAppProp;
+	}
 	
 	public EmailService() {
 		
@@ -33,17 +42,21 @@ public class EmailService {
 	   this.props.put("mail.smtp.host", "smtp.gmail.com");
 	   this.props.put("mail.smtp.port", "587");
 	   
+	   if (readAppProp == null)
+		   return;
+	   
+	   String appliMail = readAppProp.getEmailAdress();
+	   String appliMailPassword = readAppProp.getEmailPwd();
+	   
 	   this.session = Session.getInstance(props, new javax.mail.Authenticator() {
 	      protected PasswordAuthentication getPasswordAuthentication() {
-	         return new PasswordAuthentication("application.achille@gmail.com", "Eugene2017");
+	         return new PasswordAuthentication(appliMail, appliMailPassword);
 	      }
 	   });
 	   
 	   this.messageAuto = "Ce message vous a été envoyé automatiquement, merci de ne pas répondre";
 	   
 	}
-	
-	
 	
 	public void sendMail(String subject, String content, String recipient) throws AddressException, MessagingException, IOException {
 		
@@ -53,8 +66,8 @@ public class EmailService {
 	   String fullContent = content + System.getProperty("line.separator") + System.getProperty("line.separator") + this.messageAuto;
 	   
 	   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
-	   msg.setSubject("[Achille] " + subject);
-	   msg.setContent(fullContent, "text/html");
+	   msg.setSubject(subject);
+	   msg.setContent(fullContent, "text/plain");
 	   msg.setSentDate(new Date());
 
 	   Transport.send(msg);   

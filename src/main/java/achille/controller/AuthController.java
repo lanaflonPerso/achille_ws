@@ -81,7 +81,7 @@ public class AuthController {
 			EmailService em = new EmailService();
 			String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "
 					+ c.getMatricule() + System.getProperty("line.separator") + "mot de passe : " + passwordGenerated;
-			String subject = "Création de compte";
+			String subject = "[" + c.getSociete() + "- Application Payes] " + "Nouveau mot de passe";
 			String recipient = c.getEmail();
 
 			em.sendMail(subject, content, recipient);

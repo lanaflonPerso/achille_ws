@@ -1,5 +1,6 @@
 package achille.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import achille.dao.ConsultantCampagneDAO;
+import achille.dao.ConsultantDAO;
 import achille.exception.CampagneException;
 import achille.exception.ConsultantCampagneException;
 import achille.model.Campagne;
@@ -29,8 +31,11 @@ public class ConsultantCampagneService {
 	CampagneService campagneService;
 	@Autowired
 	DocumentService documentService;
-
-
+	@Autowired
+	ConsultantDAO consultantDAO;
+	@Autowired
+	ConsultantCampagneService consultantCampagneService;
+	
 	public ConsultantCampagne  getConsultantCampagneCourante(int idConsultant) throws ConsultantCampagneException, CampagneException {
 	
 		List<ConsultantCampagne> listConsultantCampagne = getConsultantCampagneCouranteSuivi(idConsultant);
@@ -43,7 +48,6 @@ public class ConsultantCampagneService {
 			throw new ConsultantCampagneException("Il n'y a pas de campagne ouverte associée à ce consultant");
 		}
 	}
-
 	public List<ConsultantCampagne>  getConsultantCampagneCouranteHistorique(int idConsultant) throws ConsultantCampagneException, CampagneException {
 		// 0 - On récupère le consultant
 		Consultant consultant= consultantService.getConsultantById(idConsultant);
@@ -58,8 +62,6 @@ public class ConsultantCampagneService {
 			throw new ConsultantCampagneException("Il n'y a pas de campagne ouverte associée à ce consultant");
 		}
 	}
-
-
 	public Map<Integer, Integer> getMapConsultantCampagneCouranteEtat() throws CampagneException {
 		Campagne campagneCourante = campagneService.getCampagneOuverte();
 		List<ConsultantCampagne> list = consultantCampagneDAO.findAllByCampagne(campagneCourante);
@@ -72,8 +74,6 @@ public class ConsultantCampagneService {
 
 		return retour;
 	}
-
-
 	public ConsultantCampagne creerConsultantCampagne(ConsultantCampagne cc, List<MultipartFile> files) throws CampagneException {
 		cc.setCampagne(campagneService.getCampagneOuverte());
 		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));	
@@ -90,16 +90,6 @@ public class ConsultantCampagneService {
 		cc.setDate(new Date());		
 		return consultantCampagneDAO.save(cc);
 	}
-
-	/**
-	 * 
-	 * @param idConsultant
-	 * @param etat
-	 * @return le consultant modifié
-	 * Update l'état de la ligne la plus récente de campagne consultant.
-	 * @throws CampagneException 
-	 * @throws ConsultantCampagneException 
-	 */
 	public ConsultantCampagne updateEtatConsultantCampagne(int idConsultant, int etat) throws CampagneException {
 		ConsultantCampagne consultantCampagne = new ConsultantCampagne();
 			try {
@@ -118,21 +108,16 @@ public class ConsultantCampagneService {
 		return consultantCampagneDAO.save(consultantCampagne);
 
 	}
-
 	public List<ConsultantCampagne> getConsultantCampagneCouranteSuivi(int idConsultant) throws CampagneException {
 		Consultant consultant= consultantService.getConsultantById(idConsultant);
 		Campagne campagneCourante = campagneService.getCampagneOuverte();
 		return consultantCampagneDAO.findByCampagneAndConsultant(campagneCourante,consultant);
 	}
-	
-
 	public List<ConsultantCampagne> getConsultantCampagne(int idConsultant, int idCampagne) throws CampagneException {
 		Consultant consultant= consultantService.getConsultantById(idConsultant);
 		Campagne campagne = campagneService.getCampagne(idCampagne);
 		return consultantCampagneDAO.findByCampagneAndConsultant(campagne,consultant);
 	}
-
-
 	public Integer getConsultantCampagneCouranteEtat(int idConsultant) throws CampagneException {
 		Campagne campagneCourante = campagneService.getCampagneOuverte();
 		List<ConsultantCampagne> consultantCampagne = consultantCampagneDAO.findByCampagneIdCampagneAndConsultantId(campagneCourante.getIdCampagne(), idConsultant);
@@ -143,7 +128,20 @@ public class ConsultantCampagneService {
 		}
 		
 	}
-
+	public void getConsultantDocCampagne() throws CampagneException {
+		
+		List<Consultant> consultants = (List<Consultant>) consultantDAO.findAll();
+		List<Consultant> consultantsCampagneRenseigne = new ArrayList<>();
+		
+		for (Consultant c : consultants) {
+			if ( consultantCampagneService.getConsultantCampagneCouranteEtat(c.getId()) == 3 &&
+					c.getCampagnePaie() ){
+				consultantsCampagneRenseigne.add(c);
+			};	
+		}
+		
+		
+	}
 
 
 

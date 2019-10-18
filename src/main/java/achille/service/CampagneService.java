@@ -93,21 +93,23 @@ public class CampagneService {
 	}
 
 	public String sendMail(int idCampagne, String typeMail) throws ConsultantException, CampagneException {
-		// 1 - Liste des ocnsultants concernés
 		Optional<Campagne> campagne = campagneDAO.findById(idCampagne);
 		String retour="";
 		if (campagne.isPresent()) {
-			List<Consultant> consultants = consultantService.getConsultantsMail(typeMail);
+			List<Consultant> consultants = consultantService.getConsultantsMail(typeMail.toLowerCase());
 			EmailService em = new EmailService();
-			String subject ="[Intervia] Campagne de paie de "
-					+campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne();
 			
 			try {
 				for (Consultant consultant : consultants) {
-					String content = "Bonjour " + consultant.getPrenom() + " " + consultant.getNom()+" , La campagne de paie " 
-							+ campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne()
-							+ " est ouverte. Vous pouvez dès maintenant renseigner vos informations. "
-							+ "Merci de vous connecter avec les identifiants qui vous ont été envoyés précédemment.";
+
+					String subject ="[" + consultant.getSociete() + "] "+ typeMail + " campagne de paie de "
+							+ campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne();
+					
+					String content = "Bonjour " + consultant.getPrenom() + " " + consultant.getNom() + System.getProperty("line.separator") +
+							" , La campagne de paie " + campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne() +
+							 " est ouverte. Vous pouvez des maintenant renseigner vos informations. " + System.getProperty("line.separator") +
+							 "Merci de vous connecter avec les identifiants qui vous ont ete envoyes precedemment.";
+					
 					String recipient = consultant.getEmail();
 					em.sendMail(subject, content, recipient);
 				}

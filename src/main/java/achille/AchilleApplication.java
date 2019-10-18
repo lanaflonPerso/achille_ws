@@ -15,6 +15,7 @@ import achille.auth.Authority;
 import achille.dao.UserDAO;
 import achille.model.User;
 import achille.password.PasswordUtils;
+import achille.utils.ReadAppProp;
 
 
 @SpringBootApplication
@@ -22,15 +23,10 @@ public class AchilleApplication {
 
 
 	private static ReadAppProp readAppProp;
-	private static UserDAO userDAO;
 
 	@Autowired
 	public void setReadAppProp(ReadAppProp readAppProp){
 		AchilleApplication.readAppProp = readAppProp;
-	}
-	@Autowired
-	public void setUserDAO(UserDAO userDAO){
-		AchilleApplication.userDAO = userDAO;
 	}
 
 	public static void main(String[] args)
@@ -38,19 +34,19 @@ public class AchilleApplication {
 
 		SpringApplication.run(AchilleApplication.class, args);
 
-		if (readAppProp.stateDb.equals("create")) {
+		if (readAppProp.getStateDb().equals("create")) {
 			AchilleApplication.initDataBase();
 		}
 	}
 
 	private static void initDataBase() throws SQLException {
 
-		String url = readAppProp.dbUrl;
-		String databaseName = readAppProp.nameDb;
-		String user = readAppProp.usrName;
-		String password = readAppProp.usrPswd;
-		String passwordGenerated = readAppProp.siteAdminPwd;
-		String userName = readAppProp.siteAdminUserName;
+		String url = readAppProp.getDbUrl();
+		String databaseName = readAppProp.getNameDb();
+		String user = readAppProp.getUsrName();
+		String password = readAppProp.getUsrPswd();
+		String passwordGenerated = readAppProp.getSiteAdminPwd();
+		String userName = readAppProp.getSiteAdminUserName();
 
 		int userid = 99999;
 		String authority = "ADMIN";
@@ -344,26 +340,3 @@ public class AchilleApplication {
 
 	}
 }
-
-@Component
-class ReadAppProp
-{
-
-	@Value("${spring.jpa.hibernate.ddl-auto}")
-	public String stateDb;
-	@Value("${databaseName}")
-	public String nameDb;
-	@Value("${spring.datasource.url}")
-	public String dbUrl;
-	@Value("${spring.datasource.username}")
-	public String usrName;
-	@Value("${spring.datasource.password}")
-	public String usrPswd;
-	@Value("${siteAdminPwd}")
-	public String siteAdminPwd;
-	@Value("${siteAdminUserName}")
-	public String siteAdminUserName;
-
-}
-
-
