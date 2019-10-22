@@ -20,7 +20,8 @@ public class Fiche {
 	@Id
 	@GeneratedValue
 	private int id;
-    private String nomJeuneFille;
+   
+	private String nomJeuneFille;
     private Sexe sexe;
     private String numeroSecuriteSocial;
     private String telephone;
@@ -81,7 +82,7 @@ public class Fiche {
 	
 	
 	public enum Sexe { Homme, Femme, Unknown;}
-	public enum StatutFamilal { Marie, PACS, Celibataire; }
+	public enum StatutFamilal { Marié, PACS, Celibataire, Unknown; }
 	public enum Nationalite { FR, EEE, HORS_EEE, Unknown;}
 	
 	public String getNomJeuneFille() {
@@ -204,5 +205,43 @@ public class Fiche {
 	public void setInsertionDate(Date insertionDate) {
 		this.insertionDate = insertionDate;
 	}
-	
+	 public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public Document getRib() {
+			return rib;
+		}
+
+		public void setRib(Document rib) {
+			this.rib = rib;
+		}
+
+		public Document getCarteGrise() {
+			return carteGrise;
+		}
+
+		public void setCarteGrise(Document carteGrise) {
+			this.carteGrise = carteGrise;
+		}
+
+		public Document getPrevoyance() {
+			return prevoyance;
+		}
+
+		public void setPrevoyance(Document prevoyance) {
+			this.prevoyance = prevoyance;
+		}
+
+		public Document getConventionAdhesion() {
+			return conventionAdhesion;
+		}
+
+		public void setConventionAdhesion(Document conventionAdhesion) {
+			this.conventionAdhesion = conventionAdhesion;
+		}
 }

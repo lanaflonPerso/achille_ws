@@ -27,7 +27,9 @@ import achille.dao.TypeContratDAO;
 import achille.dao.UserDAO;
 import achille.exception.ConsultantNotFound;
 import achille.model.Consultant;
+import achille.model.Fiche;
 import achille.service.ConsultantService;
+import achille.service.FicheService;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -49,6 +51,8 @@ public class ConsultantController {
 	UserDAO userDAO;
 	@Autowired
 	ConsultantService consultantService;
+	@Autowired
+	FicheService ficheService;
 
 	// Retourne la liste de tous les consultants : ADMIN
 	@RequestMapping(value = "/consultants")
@@ -85,12 +89,15 @@ public class ConsultantController {
 	}
 
 	// Update un consultant : ADMIN ou CONSULTANT
-	@RequestMapping(value = "/consultant", method = RequestMethod.PUT)
-	Consultant update(@RequestBody Consultant c, Authentication authentication) {
+	@RequestMapping(value = "/consultant/{id}", method = RequestMethod.PUT)
+	Consultant update(@PathVariable(value = "id", required = true) int id, @RequestBody Consultant c, Authentication authentication) {
+		c.setId(id);
 		AuthUtils.consultantAutorise(c.getId(), authentication);
 		if (!consultantDAO.existsById(c.getId())) {
 			throw new ConsultantNotFound(c.getId());
 		}
+		Fiche fSave = ficheService.createOrUpdateFiche(id, c.getFiche());
+		c.setFiche(fSave);
 		c.setInsertionDate(new Date());
 		return consultantDAO.save(c);
 
