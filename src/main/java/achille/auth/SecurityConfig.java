@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.GET,"/reset-ident").permitAll()
 		.antMatchers(HttpMethod.PUT,"/consultant-campagne/*").hasAuthority("ADMIN")
 		.antMatchers(HttpMethod.GET,"/fiche/*").hasAnyAuthority("ADMIN")
-		.antMatchers(HttpMethod.POST,"/fiche").hasAnyAuthority("ADMIN")
+		.antMatchers(HttpMethod.POST,"/fiche").hasAnyAuthority("ADMIN","CONSULTANT")
 		//.antMatchers(HttpMethod.POST,"/consultant").hasAuthority("CONSULTANT")
 		.anyRequest().permitAll()
 		.and()

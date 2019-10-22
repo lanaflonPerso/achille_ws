@@ -29,7 +29,7 @@ public class FicheController {
 	//Insère une fiche
 		@RequestMapping(value ="/fiche",  method=RequestMethod.POST)
 		Fiche create( @RequestBody Fiche f) {
-			
+			System.out.println("On est ici");
 			if (f.getAdresse() != null) {
 				Adresse a = f.getAdresse();
 				a.setInsertionDate(f.getInsertionDate());	
