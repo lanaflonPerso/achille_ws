@@ -35,7 +35,6 @@ import achille.password.PasswordGenerator;
 import achille.password.PasswordUtils;
 import achille.utils.Convert;
 import achille.wrapper.ConsultantWrapper;
-import antlr.StringUtils;
 
 @Service
 public class ConsultantService {
@@ -160,7 +159,7 @@ public class ConsultantService {
 
 	}
 	
-	@SuppressWarnings("resource")
+
 	public int updateConsultant(MultipartFile multipartfile) throws Exception {
 		ConsultantWrapper cWrapper = new ConsultantWrapper();
 

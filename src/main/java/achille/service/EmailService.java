@@ -19,7 +19,6 @@ import javax.mail.internet.MimeMultipart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import achille.AchilleApplication;
 import achille.utils.ReadAppProp;
 
 @Service

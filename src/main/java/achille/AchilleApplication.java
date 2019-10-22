@@ -1,19 +1,14 @@
 package achille;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import achille.auth.Authority;
-import achille.dao.UserDAO;
-import achille.model.User;
 import achille.password.PasswordUtils;
 import achille.utils.ReadAppProp;
 

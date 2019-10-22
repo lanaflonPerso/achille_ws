@@ -1,14 +1,7 @@
 package achille.controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,9 +17,7 @@ import achille.dao.CampagneDAO;
 import achille.exception.CampagneException;
 import achille.exception.ConsultantException;
 import achille.model.Campagne;
-import achille.model.Consultant;
 import achille.service.CampagneService;
-import achille.wrapper.ConsultantWrapper;
 
 @CrossOrigin(origins = "*")
 @RestController
