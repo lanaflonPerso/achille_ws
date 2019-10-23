@@ -26,6 +26,7 @@ public class ValueUtileController {
 		l.add(new ValueUtile("Homme"));l.add((new ValueUtile("Femme")));
 		return  l;
 	}
+	
 	@RequestMapping(value ="/situationFamiliale",  method=RequestMethod.GET)
 	List<ValueUtile> findAllSituationFamiliales() {
 		List<ValueUtile> l = new ArrayList<>(); 
