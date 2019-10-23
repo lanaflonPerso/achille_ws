@@ -35,7 +35,7 @@ public class ValueUtileController {
 	@RequestMapping(value ="/nationalite",  method=RequestMethod.GET)
 	List<ValueUtile> findAllNationalites() {
 		List<ValueUtile> l = new ArrayList<>(); 
-		l.add(new ValueUtile("FR"));l.add((new ValueUtile("EEE"))); l.add((new ValueUtile("HORS EEE")));
+		l.add(new ValueUtile("FR"));l.add((new ValueUtile("EEE"))); l.add((new ValueUtile("HORS_EEE")));
 		return  l;
 	}
 }

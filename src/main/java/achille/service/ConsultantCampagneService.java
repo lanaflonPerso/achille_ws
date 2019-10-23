@@ -74,6 +74,7 @@ public class ConsultantCampagneService {
 
 		return retour;
 	}
+	
 	public ConsultantCampagne creerConsultantCampagne(ConsultantCampagne cc, List<MultipartFile> files) throws CampagneException {
 		cc.setCampagne(campagneService.getCampagneOuverte());
 		cc.setConsultant(consultantService.getConsultantById(cc.getConsultant().getId()));	
@@ -90,6 +91,7 @@ public class ConsultantCampagneService {
 		cc.setDate(new Date());		
 		return consultantCampagneDAO.save(cc);
 	}
+	
 	public ConsultantCampagne updateEtatConsultantCampagne(int idConsultant, int etat) throws CampagneException {
 		ConsultantCampagne consultantCampagne = new ConsultantCampagne();
 			try {

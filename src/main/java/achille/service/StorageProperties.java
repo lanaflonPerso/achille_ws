@@ -17,6 +17,10 @@ public class StorageProperties {
     public String getLocation(String repertoireUser, int idCampagne) {
         return location+"/"+repertoireUser+"/"+idCampagne;
     }
+    
+    public String getLocation(String repertoireUser, String nomRep) {
+        return location+"/"+repertoireUser+"/"+nomRep;
+    }
 
     public void setLocation(String location) {
         this.location = location;

@@ -115,7 +115,7 @@ public class ConsultantService {
 			EmailService em = new EmailService();
 			String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "
 					+ c.getMatricule() + System.getProperty("line.separator") + "mot de passe : " + passwordGenerated;
-			String subject = "[" + c.getSociete() + "- Application Payes] " + "Création de compte";
+			String subject = "[" + c.getSociete().getValue() + "- Application Payes] " + "Création de compte";
 			String recipient = c.getEmail();
 
 			em.sendMail(subject, content, recipient);

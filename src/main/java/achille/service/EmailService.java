@@ -53,7 +53,7 @@ public class EmailService {
 	      }
 	   });
 	   
-	   this.messageAuto = "Ce message vous a été envoyé automatiquement, merci de ne pas répondre";
+	   this.messageAuto = "Ce message vous a été envoyé automatiquement, merci de ne pas y répondre";
 	   
 	}
 	
@@ -73,26 +73,5 @@ public class EmailService {
 
 	}
 	
-	
-	public void sendmail() throws AddressException, MessagingException, IOException {
-
-
-		   Message msg = new MimeMessage(session);
-		   msg.setFrom(new InternetAddress("lemeur.burban@gmail.com", false));
-
-		   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("lemeur.burban@gmail.com"));
-		   msg.setSubject("[Achille] Documents manquants");
-		   msg.setContent("Ce message vous a été envoyé automatiquement, merci de ne pas répondre", "text/html");
-		   msg.setSentDate(new Date());
-
-		   MimeBodyPart messageBodyPart = new MimeBodyPart();
-		   messageBodyPart.setContent("Ce message vous a été envoyé automatiquement, merci de ne pas répondre", "text/html");
-
-		   Multipart multipart = new MimeMultipart();
-		   multipart.addBodyPart(messageBodyPart);
-		 
-
-		   Transport.send(msg);   
-		}
 
 }

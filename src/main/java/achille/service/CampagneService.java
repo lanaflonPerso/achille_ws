@@ -95,13 +95,13 @@ public class CampagneService {
 			try {
 				for (Consultant consultant : consultants) {
 
-					String subject ="[" + consultant.getSociete() + "] "+ typeMail + " campagne de paie de "
+					String subject ="[" + consultant.getSociete().getValue() + "] "+ typeMail + " campagne de paie de "
 							+ campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne();
 					
 					String content = "Bonjour " + consultant.getPrenom() + " " + consultant.getNom() + " ," + System.getProperty("line.separator") +
 							System.getProperty("line.separator") +"La campagne de paie " + campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne() +
-							 " est ouverte. Vous pouvez des maintenant renseigner vos informations. " + System.getProperty("line.separator") +
-							 "Merci de vous connecter sur payes.intervia.fr avec les identifiants qui vous ont été envoyés precedemment.";
+							 " est ouverte. Vous pouvez dès maintenant renseigner vos informations. " + System.getProperty("line.separator") +
+							 "Merci de vous connecter sur payes.intervia.fr avec les identifiants qui vous ont été envoyés précédemment.";
 					
 					String recipient = consultant.getEmail();
 					em.sendMail(subject, content, recipient);

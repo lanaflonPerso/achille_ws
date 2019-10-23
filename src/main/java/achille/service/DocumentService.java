@@ -46,6 +46,25 @@ public class DocumentService {
 		return documentDAO.save(doc);
 	}
 	
+	public Document saveFileAndBdd(MultipartFile file, String userName) {
+		Document doc = new Document();
+		doc.setDate(new Date());
+		String name=file.getOriginalFilename();
+		String typeDoc = name.substring(0, name.indexOf("_"));
+		doc.setTypeDoc(typeDoc);
+		String originalName = name.substring(name.indexOf("_")+1,name.length());
+		doc.setOriginalName(originalName);
+		StringBuilder nomDoc =  new StringBuilder() ;
+		Format formatter = new SimpleDateFormat("yyyyMMdd-HHmmss");
+		String s = formatter.format(doc.getDate());
+		nomDoc.append(typeDoc).append("_").append(s).append("_").append(originalName) ;  
+		doc.setName(nomDoc.toString());
+		Path rootLocation = Paths.get(properties.getLocation(userName, "documents"));
+		doc.setPath(rootLocation.toString());
+		fileSystemStorageService.store(file, doc.getName(), rootLocation);
+		return documentDAO.save(doc);
+	}
+	
 
 	public Resource loadDocument(String filename) throws StorageFileNotFoundException, MalformedURLException {
 		// On récupère le document en BDD pour avoir l'username et l'idCampagne correspondant
