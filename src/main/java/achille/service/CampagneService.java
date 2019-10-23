@@ -98,10 +98,10 @@ public class CampagneService {
 					String subject ="[" + consultant.getSociete() + "] "+ typeMail + " campagne de paie de "
 							+ campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne();
 					
-					String content = "Bonjour " + consultant.getPrenom() + " " + consultant.getNom() + System.getProperty("line.separator") +
-							" , La campagne de paie " + campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne() +
+					String content = "Bonjour " + consultant.getPrenom() + " " + consultant.getNom() + " ," + System.getProperty("line.separator") +
+							System.getProperty("line.separator") +"La campagne de paie " + campagne.get().getMoisCampagne() + "/" +campagne.get().getAnneeCampagne() +
 							 " est ouverte. Vous pouvez des maintenant renseigner vos informations. " + System.getProperty("line.separator") +
-							 "Merci de vous connecter avec les identifiants qui vous ont ete envoyes precedemment.";
+							 "Merci de vous connecter sur payes.intervia.fr avec les identifiants qui vous ont été envoyés precedemment.";
 					
 					String recipient = consultant.getEmail();
 					em.sendMail(subject, content, recipient);
