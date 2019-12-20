@@ -27,6 +27,22 @@ public class ReadAppProp
 	private String siteAdminPwd;
 	@Value("${siteAdminUserName}")
 	private String siteAdminUserName;
+	@Value("${siteAdminPwd_2}")
+	private String siteAdminPwd_2;
+	@Value("${siteAdminUserName_2}")
+	private String siteAdminUserName_2;
+	public String getSiteAdminPwd_2() {
+		return siteAdminPwd_2;
+	}
+	public void setSiteAdminPwd_2(String siteAdminPwd_2) {
+		this.siteAdminPwd_2 = siteAdminPwd_2;
+	}
+	public String getSiteAdminUserName_2() {
+		return siteAdminUserName_2;
+	}
+	public void setSiteAdminUserName_2(String siteAdminUserName_2) {
+		this.siteAdminUserName_2 = siteAdminUserName_2;
+	}
 	@Value("${emailAdress}")
 	private String emailAdress;
 	@Value("${emailPwd}")

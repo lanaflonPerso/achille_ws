@@ -23,7 +23,7 @@ import achille.utils.ReadAppProp;
 
 @Service
 public class EmailService {
-	
+
 	private Properties props;
 	private Session session;
 	private String messageAuto;
@@ -32,46 +32,46 @@ public class EmailService {
 	public void setReadAppProp(ReadAppProp readAppProp){
 		EmailService.readAppProp = readAppProp;
 	}
-	
+
 	public EmailService() {
-		
-	   this.props = new Properties();
-	   this.props.put("mail.smtp.auth", "true");
-	   this.props.put("mail.smtp.starttls.enable", "true");
-	   this.props.put("mail.smtp.host", "smtp.gmail.com");
-	   this.props.put("mail.smtp.port", "587");
-	   
-	   if (readAppProp == null)
-		   return;
-	   
-	   String appliMail = readAppProp.getEmailAdress();
-	   String appliMailPassword = readAppProp.getEmailPwd();
-	   
-	   this.session = Session.getInstance(props, new javax.mail.Authenticator() {
-	      protected PasswordAuthentication getPasswordAuthentication() {
-	         return new PasswordAuthentication(appliMail, appliMailPassword);
-	      }
-	   });
-	   
-	   this.messageAuto = "Ce message vous a été envoyé automatiquement, merci de ne pas y répondre";
-	   
+
+		this.props = new Properties();
+		this.props.put("mail.smtp.auth", "true");
+		this.props.put("mail.smtp.starttls.enable", "true");
+		this.props.put("mail.smtp.host", "smtp.gmail.com");
+		this.props.put("mail.smtp.port", "587");
+
+		if (readAppProp == null)
+			return;
+
+		String appliMail = readAppProp.getEmailAdress();
+		String appliMailPassword = readAppProp.getEmailPwd();
+
+		this.session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(appliMail, appliMailPassword);
+			}
+		});
+
+		this.messageAuto = "Ce message vous a été envoyé automatiquement, merci de ne pas y répondre";
+
 	}
-	
+
 	public void sendMail(String subject, String content, String recipient) throws AddressException, MessagingException, IOException {
-		
-	   Message msg = new MimeMessage(session);
-	   msg.setFrom(new InternetAddress(recipient, false));
-	   
-	   String fullContent = content + System.getProperty("line.separator") + System.getProperty("line.separator") + this.messageAuto;
-	   
-	   msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
-	   msg.setSubject(subject);
-	   msg.setContent(fullContent, "text/plain");
-	   msg.setSentDate(new Date());
 
-	   Transport.send(msg);   
+		Message msg = new MimeMessage(session);
+		msg.setFrom(new InternetAddress(recipient, false));
+
+		String fullContent = content + System.getProperty("line.separator") + System.getProperty("line.separator") + this.messageAuto;
+
+		msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
+		msg.setSubject(subject);
+		msg.setContent(fullContent, "text/plain");
+		msg.setSentDate(new Date());
+
+		Transport.send(msg);   
 
 	}
-	
+
 
 }

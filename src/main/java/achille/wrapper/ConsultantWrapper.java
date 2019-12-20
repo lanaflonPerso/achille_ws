@@ -15,7 +15,9 @@ public class ConsultantWrapper {
 	private Map<String, String> header2ficheFields;
 	private Map<String, String> field2type;
 	private Map<String, String> nationalite2enumNationalite;
-
+	private Map<String, String> sexe2enumSexe;
+	
+	
 	public ConsultantWrapper() {
 
 		this.initMaps();
@@ -45,15 +47,13 @@ public class ConsultantWrapper {
 			if (this.header2ficheFields.containsKey(fields)) {
 				String fieldsName = this.header2ficheFields.get(fields);
 				String toCast = this.field2type.get(fieldsName);
-				f.setFields(fieldsName, value, toCast, this.nationalite2enumNationalite);
+				f.setFields(fieldsName, value, toCast, this.nationalite2enumNationalite, this.sexe2enumSexe);
 			}
 
 		}
 
 		c.setFiche(f);
-		c.setSendMail(false);
-
-
+		c.setSendMail(c.getCampagnePaie());//
 
 		return c;
 
@@ -65,6 +65,7 @@ public class ConsultantWrapper {
 		this.header2ficheFields = new HashMap<String, String>();
 		this.field2type = new HashMap<String, String>();
 		this.nationalite2enumNationalite = new HashMap<String, String>();
+		this.sexe2enumSexe = new HashMap<String, String>();
 
 		this.header2consultantFields.put("SOCIETE","societe");
 		this.header2consultantFields.put("MATRI","matricule");
@@ -153,9 +154,18 @@ public class ConsultantWrapper {
 		this.nationalite2enumNationalite.put("BENINOIS","HORS_EEE");
 		this.nationalite2enumNationalite.put("ITALIEN","EEE");
 		this.nationalite2enumNationalite.put("Marocain","HORS_EEE");
-		this.nationalite2enumNationalite.put("JAPONAISE","HORS_EEE");
+		this.nationalite2enumNationalite.put("congolais","HORS_EEE");
+		this.nationalite2enumNationalite.put("béninois","HORS_EEE");
+		this.nationalite2enumNationalite.put("BELGE","EEE");
+		this.nationalite2enumNationalite.put("FRANCAISE","FR");
+		this.nationalite2enumNationalite.put("SUISSE","EEE");
+		this.nationalite2enumNationalite.put("Polonaise","EEE");
 		this.nationalite2enumNationalite.put("?","Unknown");
 
+		this.sexe2enumSexe.put("H","Homme");
+		this.sexe2enumSexe.put("F","Femme");
+		this.sexe2enumSexe.put("?","Unknown");
+		
 	}
 
 	public boolean controleHeader(String[] header) {

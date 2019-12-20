@@ -30,7 +30,7 @@ public class ConsultantCampagne {
 	private List<Document> documentsCampagne = new ArrayList<Document>();
 	// Information
 	private double nbJourOuvree;
-	private double astreinte;
+	private Boolean astreinte;
 	private String commentaires;
 
 	//Getter et setter
@@ -86,10 +86,10 @@ public class ConsultantCampagne {
 	public void setNbJourOuvree(double nbJourOuvree) {
 		this.nbJourOuvree = nbJourOuvree;
 	}
-	public double getAstreinte() {
+	public boolean getAstreinte() {
 		return astreinte;
 	}
-	public void setAstreinte(double astreinte) {
+	public void setAstreinte(boolean astreinte) {
 		this.astreinte = astreinte;
 	}
 	
@@ -98,7 +98,7 @@ public class ConsultantCampagne {
 		super();
 	}
 	public ConsultantCampagne(int id, Consultant consultant, Campagne campagne, Date date, int etat,
-			List<Document> documentsCampagne, double nbJourOuvree, double astreinte, String commentaires) {
+			List<Document> documentsCampagne, double nbJourOuvree, boolean astreinte, String commentaires) {
 		super();
 		this.id = id;
 		this.consultant = consultant;

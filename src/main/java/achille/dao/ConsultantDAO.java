@@ -13,7 +13,8 @@ public interface ConsultantDAO extends CrudRepository<Consultant, Integer> {
 	Consultant findByEmail(String mail);
 
 	List<Consultant> findBySendMail(boolean b);
-
+	
+	List<Consultant> findByCampagnePaie(boolean b);
 
 }
 

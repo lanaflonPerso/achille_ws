@@ -58,7 +58,7 @@ public class Fiche {
 		
 	}
 	
-	public void setFields(String fieldsName, String fieldsValue, String toCast, Map<String,String> correctNationalite)
+	public void setFields(String fieldsName, String fieldsValue, String toCast, Map<String,String> correctNationalite, Map<String,String> correctSexe)
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, ParseException {
 
 		Field field = Fiche.class.getDeclaredField(fieldsName);
@@ -72,10 +72,18 @@ public class Fiche {
 		case "boolean": field.set(this, fieldsValue.equalsIgnoreCase("vrai")); break;
 		case "nationalite": 
 			String enumNationalite = correctNationalite.get(fieldsValue);
-			field.set(this, Nationalite.valueOf(enumNationalite));
+			if (enumNationalite == null)
+				field.set(this, Nationalite.valueOf("Unknown"));
+			else
+				field.set(this, Nationalite.valueOf(enumNationalite));			
 			break;
-		case "sexe": field.set(this, Sexe.valueOf(fieldsValue)); break;
-
+		case "sexe":
+			String enumSexe = correctSexe.get(fieldsValue);
+			if (enumSexe == null)
+				field.set(this, Sexe.valueOf("Unknown"));
+			else
+				field.set(this, Sexe.valueOf(enumSexe));			
+			break;
 		}
 
 	}

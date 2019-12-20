@@ -57,7 +57,7 @@ public class ConsultantController {
 	// Retourne la liste de tous les consultants : ADMIN
 	@RequestMapping(value = "/consultants")
 	List<Consultant> findAll() {
-		return (List<Consultant>) consultantDAO.findAll();
+		return (List<Consultant>) consultantDAO.findByCampagnePaie(true);
 	}
 
 	// Insère un consultant : ADMIN

@@ -38,16 +38,23 @@ public class AchilleApplication {
 
 		String url = readAppProp.getDbUrl();
 		String databaseName = readAppProp.getNameDb();
+		
 		String user = readAppProp.getUsrName();
 		String password = readAppProp.getUsrPswd();
-		String passwordGenerated = readAppProp.getSiteAdminPwd();
-		String userName = readAppProp.getSiteAdminUserName();
-
-		int userid = 99999;
+		
 		String authority = "ADMIN";
 		String salt = PasswordUtils.getSalt(20);
+		
+		int userid = 99999;
+		String passwordGenerated = readAppProp.getSiteAdminPwd();
+		String userName = readAppProp.getSiteAdminUserName();
 		String securedPassword = PasswordUtils.generateSecurePassword(passwordGenerated, salt);
-
+		
+		int userid_2 = 99998;
+		String passwordGenerated_2 = readAppProp.getSiteAdminPwd_2();
+		String userName_2 = readAppProp.getSiteAdminUserName_2();
+		String securedPassword_2 = PasswordUtils.generateSecurePassword(passwordGenerated_2, salt);
+		
 		Connection conn = DriverManager.getConnection(url, user, password);
 
 		Statement st = conn.createStatement();
@@ -316,7 +323,7 @@ public class AchilleApplication {
 
 		st.executeUpdate("INSERT INTO " + databaseName + ".campagne "
 				+ "(id_campagne, annee_campagne, date_ouverture, etat, mois_campagne) "
-				+ "VALUES (201901, 2019, '2019-01-01', 'O', 1)");
+				+ "VALUES (201912, 2019, '2019-12-01', 'O', 12)");
 
 		st.executeUpdate("INSERT INTO " + databaseName + ".user "
 				+ "(user_id, username, password, salt) "
@@ -326,6 +333,13 @@ public class AchilleApplication {
 				+ "(user_user_id, authority_authority) "
 				+ "VALUES ('" + Integer.toString(userid) + "', '" + authority + "')");
 
+		st.executeUpdate("INSERT INTO " + databaseName + ".user "
+				+ "(user_id, username, password, salt) "
+				+ "VALUES (" + Integer.toString(userid_2) + ", '" + userName_2 + "', '" + securedPassword_2 + "', '" + salt + "')");
+		
+		st.executeUpdate("INSERT INTO " + databaseName + ".user_authority "
+				+ "(user_user_id, authority_authority) "
+				+ "VALUES ('" + Integer.toString(userid_2) + "', '" + authority + "')");
 		conn.close();
 
 		/*List<Authority> la = new ArrayList<Authority>();

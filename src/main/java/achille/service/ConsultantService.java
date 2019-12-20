@@ -113,8 +113,31 @@ public class ConsultantService {
 
 		if (c.getSendMail()) {
 			EmailService em = new EmailService();
-			String content = "nom : " + c.getNom() + System.getProperty("line.separator") + "matricule : "
-					+ c.getMatricule() + System.getProperty("line.separator") + "mot de passe : " + passwordGenerated;
+			
+			String content = c.getSociete().getValue() +
+						" vous met à disposition un portail pour faciliter et sécuriser la transmission de vos éléments de paie du mois"
+						+ " (rapport d'activité, note de frais, note de frais facturer)." + 
+						System.getProperty("line.separator") +
+						System.getProperty("line.separator") +
+						"Vous trouverez ci-dessous les codes d'accès au site : payes.intervia.fr " +
+						System.getProperty("line.separator") +
+						"	nom : " + c.getNom() + System.getProperty("line.separator") +
+						"	matricule : " + c.getMatricule() + System.getProperty("line.separator") + 
+						"	mot de passe : " + passwordGenerated  + System.getProperty("line.separator") +
+						System.getProperty("line.separator") +
+						"Le portail sera opérationnel pour les paies de janvier, nous reviendrons vers vous par email pour le lancement des campagnes." + 
+						System.getProperty("line.separator") +
+						System.getProperty("line.separator") +
+						"L'Urssaf accepte maintenant de reconnaître la validité des justificatifs sous forme de fichier numérique dès lors"
+						+ " que le scan est identique à l'original (nombre de pages / copie complète et couleur)."
+						+ " Il ne sera donc plus nécessaire de nous transmettre vos justificatifs par courrier postal."
+						+ " Le scan peut être remplacé par une photographie de téléphone portable à condition qu'elle respecte"
+						+ " les règles énoncées ci-dessus et qu'elle soit clairement lisible." + 
+						System.getProperty("line.separator") +
+						System.getProperty("line.separator") +
+						"Le site ne marche pas sur Internet Explorer, merci d'utiliser google chrome ou mozilla firefox.";
+						
+			
 			String subject = "[" + c.getSociete().getValue() + "- Application Payes] " + "Création de compte";
 			String recipient = c.getEmail();
 
@@ -181,7 +204,6 @@ public class ConsultantService {
 				consultantDAO.save(c);
 			}
 
-			/*On crée ou update en fonction du contenu du fichier*/
 			String row;
 			int nbConsultant=0;
 
